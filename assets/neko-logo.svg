@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-labelledby="title desc">
+  <title id="title">NekoPrice logo</title>
+  <desc id="desc">A purple circular NekoPrice logo with a white cat face and the letter N.</desc>
+  <defs>
+    <radialGradient id="bg" cx="50%" cy="46%" r="58%">
+      <stop offset="0" stop-color="#7c3aed"/>
+      <stop offset=".55" stop-color="#3b0f85"/>
+      <stop offset="1" stop-color="#160523"/>
+    </radialGradient>
+    <linearGradient id="n" x1="68" x2="188" y1="72" y2="184" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#a78bfa"/>
+      <stop offset="1" stop-color="#5b21b6"/>
+    </linearGradient>
+    <filter id="glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feColorMatrix in="blur" values="0 0 0 0 0.55 0 0 0 0 0.25 0 0 0 0 1 0 0 0 .9 0"/>
+      <feMerge>
+        <feMergeNode/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <circle cx="128" cy="128" r="116" fill="url(#bg)"/>
+  <circle cx="128" cy="128" r="111" fill="none" stroke="#7c3aed" stroke-width="4" opacity=".9"/>
+  <path d="M64 106 86 63c6-12 22-12 29-1l18 30 18-30c7-11 23-11 29 1l22 43c-3 56-34 91-74 91s-71-35-74-91Z" fill="#fff" filter="url(#glow)"/>
+  <path d="m84 78 16 31-33-8Zm88 0-16 31 33-8Z" fill="#c4b5fd"/>
+  <path d="M87 147h24V99l51 48h7V86h-24v45L96 86h-9Z" fill="url(#n)"/>
+  <path d="M52 132h31M52 150h31M173 132h31M173 150h31" fill="none" stroke="#fff" stroke-width="8" stroke-linecap="round"/>
+</svg>

@@ -1,0 +1,1526 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="Cache-Control" content="no-store, no-cache, must-revalidate, max-age=0" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NekoPrice | Anime Figure Price Comparison</title>
+    <meta
+      name="description"
+      content="Compare anime figure prices across trusted stores with shipping, taxes, and exact-version matching."
+    />
+    <script>
+      document.documentElement.dataset.theme = "dark";
+    </script>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Rajdhani:wght@500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="preload" as="image" href="./assets/loading/neko-loader.gif" />
+    <link rel="preload" as="image" href="./assets/loading/neko-loader.png" />
+    <link rel="stylesheet" href="./styles.css?v=20260729-multi-angle-gallery" />
+    <style id="taxonomy-dark-critical">
+      #taxonomy-browser.taxonomy-band,
+      #taxonomy-browser,
+      body.taxonomy-open #taxonomy-browser.taxonomy-band,
+      body.taxonomy-open #taxonomy-browser {
+        background:
+          linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px),
+          radial-gradient(circle at 18% 8%, rgba(180,66,255,.22), transparent 34%),
+          #020204 !important;
+        background-size: 32px 32px, 32px 32px, auto, auto !important;
+      }
+      #taxonomy-browser .taxonomy-shell,
+      body.taxonomy-open #taxonomy-browser .taxonomy-shell {
+        color: #f7f2ff !important;
+        background:
+          radial-gradient(circle at 20% 0%, rgba(124,58,237,.26), transparent 34%),
+          linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px),
+          rgba(7,3,15,.98) !important;
+        background-size: auto, 32px 32px, 32px 32px, auto !important;
+        border: 1px solid rgba(168,85,247,.62) !important;
+        border-radius: 18px !important;
+      }
+      #taxonomy-browser .taxonomy-heading h2,
+      #taxonomy-browser .taxonomy-letter-group h3,
+      body.taxonomy-open #taxonomy-browser .taxonomy-heading h2,
+      body.taxonomy-open #taxonomy-browser .taxonomy-letter-group h3 {
+        color: #fff !important;
+      }
+      #taxonomy-browser .taxonomy-heading .eyebrow,
+      #taxonomy-browser .taxonomy-heading .muted,
+      #taxonomy-browser .taxonomy-heading-actions .result-count,
+      #taxonomy-browser .taxonomy-letter-group button,
+      body.taxonomy-open #taxonomy-browser .taxonomy-heading .eyebrow,
+      body.taxonomy-open #taxonomy-browser .taxonomy-heading .muted,
+      body.taxonomy-open #taxonomy-browser .taxonomy-heading-actions .result-count,
+      body.taxonomy-open #taxonomy-browser .taxonomy-letter-group button {
+        color: #e9d5ff !important;
+      }
+      #taxonomy-browser .taxonomy-search input,
+      #taxonomy-browser .taxonomy-alpha-nav button,
+      body.taxonomy-open #taxonomy-browser .taxonomy-search input,
+      body.taxonomy-open #taxonomy-browser .taxonomy-alpha-nav button {
+        color: #fff !important;
+        background: #21172f !important;
+        border-color: rgba(216,180,254,.46) !important;
+      }
+    </style>
+  </head>
+  <body>
+    <dialog id="marketOnboardingDialog" class="market-onboarding-dialog" aria-labelledby="marketOnboardingTitle">
+      <form id="marketOnboardingForm" class="market-onboarding-card">
+        <button id="marketOnboardingClose" class="market-onboarding-close" type="button" aria-label="Close market selector">&times;</button>
+        <div class="market-onboarding-brand" aria-hidden="true">NEKOPRICE // LOCAL MODE</div>
+        <p class="eyebrow">Welcome to NekoPrice</p>
+        <h1 id="marketOnboardingTitle">Compare the right stores in the right currency.</h1>
+        <p>
+          NekoPrice is a price comparison service for Japanese figures and collectibles. Telling us your country and
+          preferred currency helps us highlight local stores and display every offer in a currency that makes sense to you.
+        </p>
+        <div class="market-onboarding-benefits" aria-label="Benefits of setting your market">
+          <span>Local retailers are clearly marked</span>
+          <span>All prices use your preferred currency</span>
+          <span>International offers remain available</span>
+        </div>
+        <div class="market-onboarding-fields">
+          <label for="marketCountry">
+            Your country
+            <select id="marketCountry" required></select>
+          </label>
+          <label for="marketCurrency">
+            Display currency
+            <select id="marketCurrency" required></select>
+          </label>
+        </div>
+        <div id="marketOnboardingPreview" class="market-onboarding-preview" aria-live="polite">
+          <span>
+            <b id="marketPreviewLocalCount">0</b>
+            <small id="marketPreviewLocalCopy">local stores will be highlighted</small>
+          </span>
+          <span>
+            <b id="marketPreviewCurrency">EUR</b>
+            <small>prices, totals, and alerts use this currency</small>
+          </span>
+          <span>
+            <b id="marketPreviewInternational">Global</b>
+            <small>international offers remain available for comparison</small>
+          </span>
+        </div>
+        <p id="marketOnboardingHint" class="market-onboarding-hint">
+          Your market changes labels and currency only. It never hides better international deals.
+        </p>
+        <button type="submit" class="market-onboarding-submit">Start comparing prices</button>
+        <small>You can change these preferences later from your profile settings.</small>
+      </form>
+    </dialog>
+
+    <div class="price-code-rain" aria-hidden="true"></div>
+
+    <header class="topbar store-style-topbar">
+      <div class="topbar-message-row" role="note">
+        <div class="topbar-message-inner">
+          <span>Compare anime figures and Japanese goods</span>
+        </div>
+      </div>
+      <div class="topbar-main-row">
+        <a class="brand brand-ami" href="#home" aria-label="NekoPrice home">
+          <span class="brand-logo-frame">
+            <img
+              class="brand-wordmark-img"
+              src="./assets/nekoprice-wordmark-20260523.png?v=20260523-235731"
+              alt="NekoPrice"
+              onerror="this.onerror=null; this.src='./assets/nekoprice-master-wordmark.png';"
+            />
+          </span>
+        </a>
+        <form id="headerSearchForm" class="topbar-inline-search topbar-primary-search" role="search" aria-label="Header product search">
+          <input id="headerSearchInput" type="search" placeholder="What are you looking for?" autocomplete="off" />
+          <button class="topbar-search-submit" type="submit" aria-label="Search NekoPrice"></button>
+        </form>
+        <div class="topbar-utility-row" aria-label="Account shortcuts">
+          <div class="topbar-market-switcher">
+            <button id="headerMarketButton" class="topbar-utility-button topbar-market-button" type="button" aria-label="Change country and currency" aria-haspopup="menu" aria-expanded="false" aria-controls="headerMarketMenu">
+              <span id="headerCountryFlag" class="topbar-flag" aria-hidden="true">????</span>
+              <span id="headerCurrencyText" class="topbar-currency">EUR</span>
+            </button>
+            <div id="headerMarketMenu" class="topbar-market-menu" role="menu" aria-label="Choose country and currency" hidden></div>
+          </div>
+          <div class="topbar-account-switcher">
+            <button id="loginButton" class="topbar-utility-button" type="button" aria-label="Open account menu" aria-haspopup="menu" aria-expanded="false" aria-controls="accountMenu">
+              <span class="topbar-icon topbar-icon-account" aria-hidden="true"></span>
+            </button>
+            <div id="accountMenu" class="topbar-account-menu" role="menu" aria-label="Account" hidden>
+              <div id="accountGuestMenu" class="topbar-account-menu-list">
+                <button type="button" role="menuitem" data-auth-open="login">
+                  <span class="account-menu-icon account-menu-icon--login" aria-hidden="true"></span>
+                  <span><strong>Login</strong><small>Access your saved account</small></span>
+                </button>
+                <button type="button" role="menuitem" data-auth-open="create">
+                  <span class="account-menu-icon account-menu-icon--create" aria-hidden="true"></span>
+                  <span><strong>Create account</strong><small>Save wishlists and join the community</small></span>
+                </button>
+              </div>
+              <div id="accountSessionMenu" class="topbar-account-session" hidden>
+                <div class="topbar-account-summary">
+                  <span id="accountAvatar" class="topbar-account-avatar" aria-hidden="true">N</span>
+                  <span><strong id="accountDisplayName">Collector</strong><small id="accountDisplayEmail"></small></span>
+                </div>
+                <button id="accountPreferencesButton" type="button" role="menuitem">Account preferences</button>
+                <button id="accountLogoutButton" type="button" role="menuitem">Sign out</button>
+              </div>
+            </div>
+          </div>
+          <button id="wishlistButton" class="topbar-utility-button" type="button" aria-label="Open wishlist">
+            <span class="topbar-icon topbar-icon-heart" aria-hidden="true"></span>
+            <span id="wishlistCount" class="topbar-count" aria-label="Wishlist items">0</span>
+          </button>
+        </div>
+      </div>
+      <nav class="topbar-nav topbar-category-row" aria-label="NekoPrice product navigation">
+        <div class="topbar-nav-item figures-menu-trigger">
+          <button type="button" data-header-category="trending">Figures</button>
+          <div class="figures-mega-menu" role="menu" aria-label="Figure discovery menu">
+            <div class="mega-menu-columns">
+              <section>
+                <h3>Categories</h3>
+                <button type="button" data-header-category="trending">General Figures</button>
+                <button type="button" data-header-query="Best Sellers">Best Sellers</button>
+                <button type="button" data-header-query="Shop Exclusive">Shop Exclusives</button>
+                <button type="button" data-header-category="nendoroids">Nendoroids</button>
+                <button type="button" data-header-query="Figma">Figma</button>
+                <button type="button" data-header-query="POP UP PARADE">Pop Up Parade</button>
+                <button type="button" data-header-category="prize">Prize Figures</button>
+                <button type="button" data-header-section="sales">Sale</button>
+                <button type="button" data-header-category="trending" class="mega-menu-all">All Figures...</button>
+              </section>
+              <section>
+                <h3>Franchises</h3>
+                <button type="button" data-header-query="One Piece">One Piece</button>
+                <button type="button" data-header-query="Evangelion">Evangelion</button>
+                <button type="button" data-header-query="Vocaloid">Vocaloid</button>
+                <button type="button" data-header-query="JoJo">JoJo's Adventure</button>
+                <button type="button" data-header-query="Fate">Fate/Series</button>
+                <button type="button" data-header-query="My Hero Academia">My Hero Academia</button>
+                <button type="button" data-header-query="Kimetsu no Yaiba">Kimetsu no Yaiba</button>
+                <button type="button" data-header-query="Dragon Ball">Dragon Ball</button>
+                <button type="button" data-header-query="Genshin Impact">Genshin Impact</button>
+                <button type="button" data-header-query="Chainsaw Man">Chainsaw Man</button>
+                <button type="button" data-taxonomy-list="franchises" class="mega-menu-all">All Franchises...</button>
+              </section>
+              <section>
+                <h3>Characters</h3>
+                <button type="button" data-header-query="Hatsune Miku">Hatsune Miku</button>
+                <button type="button" data-header-query="Saber">Saber</button>
+                <button type="button" data-header-query="Super Sonico">Super Sonico</button>
+                <button type="button" data-header-query="Makise Kurisu">Makise Kurisu</button>
+                <button type="button" data-header-query="Rem">Rem</button>
+                <button type="button" data-header-query="Madoka">Madoka</button>
+                <button type="button" data-header-query="Katsuki Bakugou">Katsuki Bakugou</button>
+                <button type="button" data-header-query="Levi Ackerman">Levi Ackerman</button>
+                <button type="button" data-header-query="Jotaro Kujo">Jotaro Kujo</button>
+                <button type="button" data-header-query="Monkey D. Luffy">Monkey D. Luffy</button>
+                <button type="button" data-taxonomy-list="characters" class="mega-menu-all">All Characters...</button>
+              </section>
+            </div>
+          </div>
+        </div>
+        <button type="button" data-header-query="Manga">Mangas</button>
+        <button type="button" data-header-query="Trading cards">Cards</button>
+        <button type="button" data-header-category="new">New</button>
+        <button type="button" data-header-query="Accessories">Accessories</button>
+        <button type="button" data-header-section="sales" class="header-sales-link">Sales</button>
+        <button type="button" data-header-section="community">Community</button>
+      </nav>
+    </header>
+
+    <button class="floating-database-button" id="sidebarDatabaseButton" type="button" aria-label="Open database status">
+      DB <strong id="floatingDatabaseCount">0</strong>
+    </button>
+
+    <main>
+      <section id="promotions-carousel" class="app-band popular-series-band" aria-labelledby="popularSeriesTitle">
+        <div class="band-inner popular-series-shell">
+          <div class="popular-series-heading">
+            <div>
+              <p class="eyebrow">Popular series</p>
+              <h2 id="popularSeriesTitle">Compare figures from the most popular series</h2>
+            </div>
+            <div class="popular-series-controls" aria-label="Popular series carousel controls">
+              <button id="popularSeriesPrev" type="button" aria-label="Previous popular series">&lsaquo;</button>
+              <button id="popularSeriesNext" type="button" aria-label="Next popular series">&rsaquo;</button>
+            </div>
+          </div>
+          <div id="promotionsTrack" class="popular-series-track" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section id="neko-advisor" class="app-band neko-advisor-band" aria-labelledby="nekoAdvisorTitle" hidden>
+        <div class="band-inner neko-advisor-shell">
+          <button id="nekoAdvisorHome" type="button" class="neko-advisor-home">Back home</button>
+
+          <div class="neko-pixel-stage" aria-hidden="true">
+            <span class="pixel-sun"></span>
+            <span class="pixel-tree pixel-tree-a"></span>
+            <span class="pixel-tree pixel-tree-b"></span>
+            <span class="pixel-tree pixel-tree-c"></span>
+          </div>
+
+          <article class="neko-advisor-panel">
+            <div class="neko-advisor-character">
+              <img src="./assets/mascot/neko-advisor-guide-pixel.png" alt="NekoPrice guide" loading="lazy" decoding="async" />
+            </div>
+
+            <div class="neko-advisor-console">
+              <p class="eyebrow">Offer Finder</p>
+              <h2 id="nekoAdvisorTitle">Find the best offer</h2>
+              <div id="nekoAdvisorDialogue" class="neko-dialogue" aria-live="polite">
+                Tell us what you want to compare. We will filter verified offers by budget, type, category and store.
+              </div>
+              <div id="nekoAdvisorHud" class="neko-advisor-hud" aria-hidden="true">
+                <span data-neko-stage="kind" class="is-active">01 Request</span>
+                <span data-neko-stage="budget">02 Budget</span>
+                <span data-neko-stage="filters">03 Filters</span>
+                <span data-neko-stage="scan">04 Scan</span>
+                <span data-neko-stage="results">05 Results</span>
+              </div>
+
+              <div id="nekoAdvisorKindStep" class="neko-advisor-step">
+                <span>Choose what you want to compare</span>
+                <div class="neko-choice-grid" role="group" aria-label="Choose product type">
+                  <button type="button" data-neko-kind="figures">Figures</button>
+                  <button type="button" data-neko-kind="mangas">Mangas</button>
+                  <button type="button" data-neko-kind="plushies">Plushies</button>
+                  <button type="button" data-neko-kind="">Anything</button>
+                </div>
+              </div>
+
+              <form id="nekoAdvisorBudgetForm" class="neko-advisor-step" hidden>
+                <label for="nekoAdvisorBudget">Your maximum budget</label>
+                <div class="neko-budget-row">
+                  <input id="nekoAdvisorBudget" type="number" min="1" step="0.01" inputmode="decimal" placeholder="80" />
+                  <span id="nekoAdvisorCurrency">EUR</span>
+                  <button type="submit">Continue</button>
+                </div>
+                <div class="neko-quick-budget" role="group" aria-label="Quick budget choices">
+                  <button type="button" data-neko-budget-preset="50">50</button>
+                  <button type="button" data-neko-budget-preset="100">100</button>
+                  <button type="button" data-neko-budget-preset="200">200</button>
+                  <button type="button" data-neko-budget-preset="350">350</button>
+                </div>
+              </form>
+
+              <div id="nekoAdvisorCategoryStep" class="neko-advisor-step" hidden>
+                <span>Category preference</span>
+                <div class="neko-choice-grid" role="group" aria-label="Choose figure category">
+                  <button type="button" data-neko-category="">Anything</button>
+                  <button type="button" data-neko-category="scale">Scale figures</button>
+                  <button type="button" data-neko-category="prize">Prize figures</button>
+                  <button type="button" data-neko-category="pop">Pop Up Parade</button>
+                  <button type="button" data-neko-category="nendoroid">Nendoroid</button>
+                  <button type="button" data-neko-category="figma">Figma</button>
+                  <button type="button" data-neko-category="action">Action figures</button>
+                  <button type="button" data-neko-category="figuarts">Figuarts</button>
+                  <button type="button" data-neko-category="bunny">Bunny / 1/4</button>
+                  <button type="button" data-neko-category="mecha">Mecha</button>
+                  <button type="button" data-neko-category="model">Model kits</button>
+                  <button type="button" data-neko-category="statue">Statues</button>
+                </div>
+              </div>
+
+              <form id="nekoAdvisorCharacterForm" class="neko-advisor-step" hidden>
+                <label for="nekoAdvisorCharacter">Character or series preference</label>
+                <div class="neko-character-row">
+                  <input id="nekoAdvisorCharacter" type="search" autocomplete="off" placeholder="Hatsune Miku" />
+                  <button type="submit">Search</button>
+                  <button type="button" data-neko-no-character>Anything</button>
+                </div>
+              </form>
+
+              <form id="nekoAdvisorStoreForm" class="neko-advisor-step" hidden>
+                <label for="nekoAdvisorStore">Store preference</label>
+                <div class="neko-character-row">
+                  <select id="nekoAdvisorStore">
+                    <option value="all">Any store</option>
+                  </select>
+                  <button type="submit">Show offers</button>
+                  <button type="button" data-neko-any-store>Anything</button>
+                </div>
+              </form>
+
+              <div id="nekoAdvisorResults" class="neko-advisor-results" aria-live="polite" hidden></div>
+
+              <div id="nekoAdvisorResultActions" class="neko-advisor-result-actions" hidden>
+                <button id="nekoAdvisorReroll" type="button">Show more options</button>
+                <button id="nekoAdvisorRefine" type="button">Refine request</button>
+              </div>
+
+              <div class="neko-advisor-actions">
+                <button id="nekoAdvisorRestart" type="button" class="secondary-button">Start over</button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="home" class="app-band hero-search-section">
+        <div class="band-inner hero-search-shell">
+          <h1>Search for the best prices</h1>
+
+          <form class="hero-search-form" id="searchForm" role="search">
+            <label class="sr-only" for="searchInput">Search anime figures</label>
+            <input
+              id="searchInput"
+              type="search"
+              placeholder="Search by keyword"
+              autocomplete="off"
+            />
+          </form>
+
+          <div class="hero-badge-row trust-strip" aria-label="NekoPrice trust signals">
+            <span><i class="trust-icon store" aria-hidden="true"></i>Trusted stores</span>
+            <span><i class="trust-icon secure" aria-hidden="true"></i>Shipping included</span>
+            <span><i class="trust-icon exact" aria-hidden="true"></i>Exact figure matches</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="new-arrivals" class="app-band new-arrivals-band store-logo-marquee-band" aria-label="Figure store logos">
+        <div class="band-inner">
+          <div id="newArrivalsGrid" class="new-arrivals-grid store-sites-carousel" aria-live="polite">
+            <div class="store-logo-track">
+              <span class="store-logo-link store-logo-only" aria-label="Crunchyroll Store"><img class="store-logo-fallback" src="./assets/store-logo-squares/crunchyroll.png?v=20260714-professional-symbols" alt="Crunchyroll Store" loading="eager" decoding="async" /></span>
+              <span class="store-logo-link store-logo-only" aria-label="Good Smile Company"><img class="store-logo-fallback" src="./assets/store-logo-squares/goodsmile.png?v=20260714-professional-symbols" alt="Good Smile Company" loading="eager" decoding="async" /></span>
+              <span class="store-logo-link store-logo-only" aria-label="Kappa Hobby"><img class="store-logo-fallback" src="./assets/store-logo-squares/kappahobby.png?v=20260714-professional-symbols" alt="Kappa Hobby" loading="eager" decoding="async" /></span>
+              <span class="store-logo-link store-logo-only" aria-label="Lunar Toy Store"><img class="store-logo-fallback" src="./assets/store-logo-squares/lunar_toy_store.png?v=20260714-professional-symbols" alt="Lunar Toy Store" loading="eager" decoding="async" /></span>
+              <span class="store-logo-link store-logo-only" aria-label="Mandarake"><img class="store-logo-fallback" src="./assets/store-logo-squares/mandarake.png?v=20260714-professional-symbols" alt="Mandarake" loading="eager" decoding="async" /></span>
+              <span class="store-logo-link store-logo-only" aria-label="Navito World"><img class="store-logo-fallback" src="./assets/store-logo-squares/navito_world.png?v=20260714-professional-symbols" alt="Navito World" loading="eager" decoding="async" /></span>
+              <span class="store-logo-link store-logo-only" aria-label="Ninoma"><img class="store-logo-fallback" src="./assets/store-logo-squares/ninoma.png?v=20260714-professional-symbols" alt="Ninoma" loading="eager" decoding="async" /></span>
+              <span class="store-logo-link store-logo-only" aria-label="Pixelatoy"><img class="store-logo-fallback" src="./assets/store-logo-squares/pixelatoy.png?v=20260714-professional-symbols" alt="Pixelatoy" loading="eager" decoding="async" /></span>
+              <span class="store-logo-link store-logo-only" aria-label="Solaris Japan"><img class="store-logo-fallback" src="./assets/store-logo-squares/solaris.png?v=20260714-professional-symbols" alt="Solaris Japan" loading="eager" decoding="async" /></span>
+              <span class="store-logo-link store-logo-only" aria-label="Sugo Toys"><img class="store-logo-fallback" src="./assets/store-logo-squares/sugo_toys.png?v=20260714-professional-symbols" alt="Sugo Toys" loading="eager" decoding="async" /></span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="trending-now" class="app-band trending-now-band" aria-labelledby="trendingNowTitle">
+        <div class="band-inner">
+          <div class="trending-now-heading">
+            <div>
+              <p class="eyebrow">Live store radar</p>
+              <h2 id="trendingNowTitle" data-title="Trending Now">Trending Now</h2>
+            </div>
+          </div>
+          <p id="trendingNowStatus" class="trending-now-status" role="status"></p>
+          <div id="trendingNowGrid" class="trending-now-grid" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section id="results" class="app-band results-band" aria-label="Figure results" hidden>
+        <button id="catalogHomeButton" type="button" class="secondary-button catalog-home-button figure-catalog-home-button" aria-label="Back home">
+          Back home
+        </button>
+        <div class="band-inner">
+          <header class="sr-only">
+            <div>
+              <p class="eyebrow">Figure catalogue</p>
+              <h1 id="resultsTitle">Anime figures</h1>
+              <p id="resultsSubtitle" class="muted">Compare figures with verified prices, store coverage, and filters.</p>
+            </div>
+            <p id="resultMeta" class="result-count" aria-live="polite"></p>
+          </header>
+
+          <div class="category-chips" id="categoryChips" aria-label="Figure categories">
+            <button type="button" data-category="trending" aria-pressed="true">All figures</button>
+            <button type="button" data-category="new">New releases</button>
+            <button type="button" data-category="nendoroids">Nendoroids</button>
+            <button type="button" data-category="scale">Scale figures</button>
+            <button type="button" data-category="prize">Prize figures</button>
+            <button type="button" data-category="figma">Figma</button>
+            <button type="button" data-category="pop">Pop Up Parade</button>
+            <button type="button" data-category="action">Action figures</button>
+            <button type="button" data-category="castoff">Cast-Off (18+)</button>
+            <button type="button" data-category="preorder">Pre-orders</button>
+          </div>
+
+          <div class="workspace-grid">
+            <details class="filter-shell" open>
+              <summary>
+                <span>Optional filters</span>
+                <small>Store, type, availability</small>
+              </summary>
+              <aside class="filter-panel figure-filter-panel" aria-label="Figure filters">
+                <div class="figure-filter-menu">
+                  <section class="figure-filter-section figure-filter-section--options" aria-label="Filter options">
+                    <h3>Options</h3>
+
+                    <details id="manufacturerFilterDisclosure" class="figure-filter-disclosure manufacturer-filter-disclosure">
+                      <summary>
+                        <span>Manufacturer</span>
+                        <b aria-hidden="true"></b>
+                      </summary>
+                      <div class="figure-filter-control">
+                        <label class="sr-only" for="manufacturerFilter">Manufacturer</label>
+                        <select id="manufacturerFilter">
+                          <option value="all">All manufacturers</option>
+                        </select>
+                      </div>
+                    </details>
+
+                    <details class="figure-filter-disclosure">
+                      <summary>
+                        <span>Category</span>
+                        <b aria-hidden="true"></b>
+                      </summary>
+                      <div class="figure-filter-control">
+                        <label class="sr-only" for="typeFilter">Category</label>
+                        <select id="typeFilter">
+                          <option value="all">All categories</option>
+                        </select>
+                      </div>
+                    </details>
+                  </section>
+
+                  <section id="seriesFilterSection" class="figure-filter-section series-filter-section" aria-label="Series filter" hidden>
+                    <h3>Series filter</h3>
+                    <details class="figure-filter-disclosure series-character-disclosure">
+                      <summary>
+                        <span>Character</span>
+                        <b aria-hidden="true"></b>
+                      </summary>
+                      <div id="seriesCharacterFilters" class="figure-filter-checklist series-character-list"></div>
+                    </details>
+                  </section>
+
+                  <section class="figure-filter-section" aria-label="Figure filters">
+                    <h3>Filters</h3>
+                    <div class="figure-filter-checklist" id="figureFilterOptions">
+                      <label class="figure-filter-check">
+                        <input type="checkbox" value="lowestTotal" data-figure-price-sort />
+                        <span>Lowest price</span>
+                      </label>
+                      <label class="figure-filter-check">
+                        <input type="checkbox" value="highestTotal" data-figure-price-sort />
+                        <span>Highest price</span>
+                      </label>
+                      <label class="figure-filter-check">
+                        <input type="checkbox" value="in_stock_alt" data-quick-filter="in_stock_alt" />
+                        <span>In-Stock</span>
+                      </label>
+                      <label class="figure-filter-check">
+                        <input type="checkbox" value="mature" data-quick-filter="mature" />
+                        <span>Mature</span>
+                      </label>
+                      <label class="figure-filter-check">
+                        <input type="checkbox" value="sales" data-quick-filter="sales" />
+                        <span>Sales</span>
+                      </label>
+                      <label class="figure-filter-check">
+                        <input type="checkbox" value="new" data-quick-filter="new" />
+                        <span>New</span>
+                      </label>
+                      <label class="figure-filter-check">
+                        <input type="checkbox" value="poseable" data-quick-filter="poseable" />
+                        <span>Poseable Figure</span>
+                      </label>
+                      <label class="figure-filter-check">
+                        <input type="checkbox" value="preorder" data-quick-filter="preorder" />
+                        <span>Pre-order</span>
+                      </label>
+                    </div>
+
+                    <details class="figure-filter-disclosure figure-filter-disclosure--price" open>
+                      <summary>
+                        <span>Price</span>
+                        <b aria-hidden="true"></b>
+                      </summary>
+                      <div class="dual-price-range" id="figurePriceRangeControl">
+                        <div class="dual-price-range__inputs">
+                          <div class="dual-price-range__track" aria-hidden="true">
+                            <span class="dual-price-range__fill"></span>
+                          </div>
+                          <span class="dual-price-range__handle dual-price-range__handle--min" aria-hidden="true"></span>
+                          <span class="dual-price-range__handle dual-price-range__handle--max" aria-hidden="true"></span>
+                          <input id="priceRangeMin" type="range" min="0" max="1000" step="5" value="0" aria-label="Minimum price" />
+                          <input id="priceRange" type="range" min="0" max="1000" step="5" value="1000" aria-label="Maximum price" />
+                        </div>
+                        <output id="priceRangeValue" class="dual-price-range__value" data-i18n-skip>€0.00 – €1,000.00</output>
+                      </div>
+                    </details>
+                  </section>
+
+                  <div class="figure-filter-hidden-controls" aria-hidden="true">
+                    <div class="filter-group" data-figure-filter="status">
+                      <label for="statusFilter">Availability</label>
+                      <select id="statusFilter" tabindex="-1">
+                        <option value="all">Any availability</option>
+                        <option value="In stock">In stock</option>
+                        <option value="Pre-order">Pre-order</option>
+                        <option value="Released">Released</option>
+                        <option value="Sold out">Sold out</option>
+                        <option value="Archive">Archive</option>
+                      </select>
+                    </div>
+                    <div class="filter-group" data-figure-filter="store">
+                      <label for="providerFilter">Store</label>
+                      <select id="providerFilter" tabindex="-1">
+                        <option value="all">All stores</option>
+                      </select>
+                    </div>
+                    <div class="filter-group" data-figure-filter="sort">
+                      <label for="sortFilter">Sort by</label>
+                      <select id="sortFilter" tabindex="-1">
+                        <option value="catalogue">Default order</option>
+                        <option value="lowestTotal">Lowest price first</option>
+                        <option value="newest">Newest release first</option>
+                        <option value="availability">Availability first</option>
+                      </select>
+                    </div>
+                    <div class="filter-group compact-checks" data-figure-filter="checks">
+                      <label>
+                        <input id="confirmedOnly" type="checkbox" tabindex="-1" />
+                        Checked stores only
+                      </label>
+                      <label>
+                        <input id="shipsToPortugal" type="checkbox" tabindex="-1" />
+                        Ships to selected country
+                      </label>
+                    </div>
+                  </div>
+                </div>
+              </aside>
+            </details>
+
+            <div>
+              <div class="figure-toolbar" aria-label="Figure browsing tools">
+                <label class="figure-toolbar-search" for="gridSearchInput">
+                  <span>Search figures</span>
+                  <input id="gridSearchInput" type="search" placeholder="Filter by name or JAN..." autocomplete="off" />
+                </label>
+                <label class="figure-toolbar-sort" for="gridSortSelect">
+                  <span>Sort</span>
+                      <select id="gridSortSelect">
+                        <option value="catalogue">Default order</option>
+                        <option value="lowestTotal">Price: Lowest first</option>
+                    <option value="newest">Newest first</option>
+                    <option value="highestTotal">Price: Highest first</option>
+                  </select>
+                </label>
+              </div>
+              <div class="comparison-tabs-shell" data-comparison-tabs-open="false" aria-label="Comparison overview">
+                <nav class="comparison-tabs-nav" role="tablist" aria-label="Product comparison sections">
+                  <button class="comparison-tabs-tab" type="button" role="tab" aria-selected="false" aria-expanded="false" aria-controls="comparisonStoresPanel" data-comparison-tab="stores">Stores</button>
+                  <button class="comparison-tabs-tab" type="button" role="tab" aria-selected="false" aria-expanded="false" data-comparison-tab="features">Features</button>
+                  <button class="comparison-tabs-tab" type="button" role="tab" aria-selected="false" aria-expanded="false" data-comparison-tab="price-history">Price history</button>
+                  <button class="comparison-tabs-tab" type="button" role="tab" aria-selected="false" aria-expanded="false" data-comparison-tab="reviews">Reviews</button>
+                </nav>
+
+                <div id="comparisonStoresPanel" class="comparison-tabs-panel" role="tabpanel" aria-label="Stores comparison" hidden>
+                  <div id="marketplaceLensBar" class="marketplace-lens-bar" aria-label="Marketplace quick views">
+                    <div class="marketplace-lens-copy">
+                      <span>Shop by intent</span>
+                      <strong id="marketplaceLensSummary">Find verified offers faster.</strong>
+                    </div>
+                    <div class="marketplace-lens-buttons">
+                      <button type="button" data-marketplace-lens="all" aria-pressed="true">All</button>
+                      <button type="button" data-marketplace-lens="bestPrice" aria-pressed="false">Best prices</button>
+                      <button type="button" data-marketplace-lens="multiStore" aria-pressed="false">2+ stores</button>
+                      <button type="button" data-marketplace-lens="local" aria-pressed="false">Local stores</button>
+                      <button type="button" data-marketplace-lens="preorder" aria-pressed="false">Pre-orders</button>
+                      <button type="button" data-marketplace-lens="needsCheck" aria-pressed="false">Needs check</button>
+                    </div>
+                  </div>
+                  <div id="comparisonGuide" class="comparison-guide" aria-live="polite" hidden>
+                    <div class="comparison-guide-copy">
+                      <span>Buyer guide</span>
+                      <strong id="comparisonGuideTitle">Compare with confidence.</strong>
+                      <p id="comparisonGuideCopy">Use verified prices, local-store signals, and refresh warnings before opening a store.</p>
+                    </div>
+                    <div id="comparisonGuideTips" class="comparison-guide-tips"></div>
+                  </div>
+                  <div id="activeFilterBar" class="active-filter-bar" aria-live="polite" hidden>
+                    <div class="active-filter-summary">
+                      <span>Current comparison</span>
+                      <strong id="activeFilterSummary">All filters clear</strong>
+                    </div>
+                    <div id="activeFilterChips" class="active-filter-chips" aria-label="Active filters"></div>
+                    <button id="clearFigureFilters" class="active-filter-clear" type="button" hidden>Clear filters</button>
+                  </div>
+                </div>
+              </div>
+              <div class="product-grid premium-figure-grid" id="productGrid"></div>
+              <div class="show-more-wrap">
+                <nav id="figurePagination" class="figure-pagination" aria-label="Figure pages" hidden></nav>
+                <button id="showMoreButton" type="button" class="secondary-button" hidden>Show more</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="sales" class="app-band sales-band" aria-labelledby="salesTitle" hidden>
+        <div class="band-inner sales-shell">
+          <h1 id="salesTitle" class="sr-only">Sales</h1>
+
+          <div class="sales-workspace-grid">
+            <details class="filter-shell sales-filter-shell" open>
+              <summary>
+                <span>Optional filters</span>
+                <small>Store, category, discount</small>
+              </summary>
+              <aside class="filter-panel figure-filter-panel sales-filter-panel" aria-label="Sales filters">
+                <div class="figure-filter-menu sales-filter-menu">
+                  <section class="figure-filter-section figure-filter-section--options" aria-label="Sales filter options">
+                    <h3>Options</h3>
+                    <details class="figure-filter-disclosure">
+                      <summary>
+                        <span>Store</span>
+                        <b aria-hidden="true"></b>
+                      </summary>
+                      <div class="figure-filter-control">
+                        <label class="sr-only" for="salesStoreFilter">Store</label>
+                        <select id="salesStoreFilter">
+                          <option value="all">All stores</option>
+                        </select>
+                      </div>
+                    </details>
+
+                    <details class="figure-filter-disclosure">
+                      <summary>
+                        <span>Category</span>
+                        <b aria-hidden="true"></b>
+                      </summary>
+                      <div class="figure-filter-control">
+                        <label class="sr-only" for="salesCategoryFilter">Category</label>
+                        <select id="salesCategoryFilter">
+                          <option value="all">All categories</option>
+                        </select>
+                      </div>
+                    </details>
+                  </section>
+
+                  <section class="figure-filter-section" aria-label="Sales filters">
+                    <h3>Filters</h3>
+                    <div class="figure-filter-checklist" id="salesQuickFilters">
+                      <label class="figure-filter-check">
+                        <input type="checkbox" value="price_drop" data-sales-quick-filter="price_drop" />
+                        <span>Price drop</span>
+                      </label>
+                      <label class="figure-filter-check">
+                        <input type="checkbox" value="store_sale" data-sales-quick-filter="store_sale" />
+                        <span>Store sale</span>
+                      </label>
+                      <label class="figure-filter-check">
+                        <input type="checkbox" value="discount_20" data-sales-quick-filter="discount_20" />
+                        <span>20%+ off</span>
+                      </label>
+                      <label class="figure-filter-check">
+                        <input type="checkbox" value="discount_40" data-sales-quick-filter="discount_40" />
+                        <span>40%+ off</span>
+                      </label>
+                      <label class="figure-filter-check">
+                        <input type="checkbox" value="local_store" data-sales-quick-filter="local_store" />
+                        <span>Local store</span>
+                      </label>
+                      <label class="figure-filter-check">
+                        <input type="checkbox" value="recent" data-sales-quick-filter="recent" />
+                        <span>Recently checked</span>
+                      </label>
+                    </div>
+
+                    <details class="figure-filter-disclosure figure-filter-disclosure--price" open>
+                      <summary>
+                        <span>Price</span>
+                        <b aria-hidden="true"></b>
+                      </summary>
+                  <div class="dual-price-range" id="salesPriceRangeControl">
+                    <div class="dual-price-range__inputs">
+                      <div class="dual-price-range__track" aria-hidden="true">
+                        <span class="dual-price-range__fill"></span>
+                      </div>
+                      <span class="dual-price-range__handle dual-price-range__handle--min" aria-hidden="true"></span>
+                      <span class="dual-price-range__handle dual-price-range__handle--max" aria-hidden="true"></span>
+                      <input id="salesPriceRangeMin" type="range" min="0" max="1000" step="5" value="0" aria-label="Minimum sale price" />
+                      <input id="salesPriceRange" type="range" min="0" max="1000" step="5" value="1000" aria-label="Maximum sale price" />
+                    </div>
+                    <output id="salesPriceValue" class="dual-price-range__value" data-i18n-skip>€0.00 – €1,000.00</output>
+                      </div>
+                    </details>
+                  </section>
+                </div>
+              </aside>
+            </details>
+
+            <section class="sales-results-panel" aria-label="Sales results">
+              <div id="salesStatus" class="sales-status" aria-live="polite"></div>
+              <div id="salesGrid" class="sales-grid"></div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <section id="taxonomy-browser" class="app-band taxonomy-band" aria-labelledby="taxonomyTitle" hidden>
+        <div class="band-inner taxonomy-shell">
+          <header class="taxonomy-heading">
+            <div>
+              <p class="eyebrow" id="taxonomyEyebrow">Figure index</p>
+              <h2 id="taxonomyTitle">All Franchises</h2>
+              <p id="taxonomySubtitle" class="muted">Browse catalogue entries grouped by letter.</p>
+            </div>
+            <div class="taxonomy-heading-actions">
+              <p id="taxonomyMeta" class="muted result-count" aria-live="polite">Loading index...</p>
+              <button id="taxonomyHomeButton" type="button" class="secondary-button catalog-home-button">Back home</button>
+            </div>
+          </header>
+
+          <form id="taxonomySearchForm" class="taxonomy-search" role="search" aria-label="Search index">
+            <label class="sr-only" for="taxonomySearchInput">Search index</label>
+            <input id="taxonomySearchInput" type="search" placeholder="Search by name" autocomplete="off" />
+          </form>
+
+          <nav id="taxonomyAlphaNav" class="taxonomy-alpha-nav" aria-label="Jump to letter"></nav>
+          <div id="taxonomyGrid" class="taxonomy-grid" aria-live="polite"></div>
+        </div>
+      </section>
+
+      <section id="figure" class="app-band product-band" aria-labelledby="productTitle" hidden>
+        <div class="band-inner product-detail-header">
+          <button id="backToResultsButton" type="button" class="secondary-button product-back-button">
+            Back to results
+          </button>
+        </div>
+        <div class="band-inner product-layout">
+          <article class="product-summary">
+            <div class="product-gallery" id="productGallery" aria-label="Official product image gallery">
+              <div class="product-image-frame" id="productImageFrame">
+                <img
+                  id="productImage"
+                  src="./assets/figure-placeholder.svg"
+                  alt="Selected figure image"
+                  decoding="async"
+                />
+                <div class="figure-placeholder product-image-fallback" aria-hidden="true"></div>
+                <button id="productImagePrevious" class="product-gallery-nav product-gallery-nav--previous" type="button" aria-label="Previous product image" hidden>&lsaquo;</button>
+                <button id="productImageNext" class="product-gallery-nav product-gallery-nav--next" type="button" aria-label="Next product image" hidden>&rsaquo;</button>
+                <button id="productImageExpand" class="product-gallery-expand" type="button" aria-label="Open full-size image">&#8599;</button>
+              </div>
+              <div class="product-gallery-meta">
+                <span id="productGalleryStatus" aria-live="polite">Official product image</span>
+                <span>Click to view full size</span>
+              </div>
+              <div id="productImageThumbnails" class="product-gallery-thumbnails" role="listbox" aria-label="Choose product image" hidden></div>
+            </div>
+              <div class="product-copy">
+                <p class="eyebrow">Figure page</p>
+                <h2 id="productTitle">Selected figure</h2>
+              <p id="productDescription">
+                Store totals for this exact figure, with different versions kept separate.
+              </p>
+              <dl class="spec-grid" id="specGrid"></dl>
+              <div class="product-actions">
+                <button id="trackProduct" type="button">Save to wishlist</button>
+                <button id="addToCartProduct" type="button" class="secondary-button">Add to cart</button>
+                <button id="alertProduct" type="button" class="secondary-button">Create price alert</button>
+              </div>
+            </div>
+          </article>
+
+          <div class="product-deal-showcase offer-market-column offer-market-column-direct">
+            <header class="offer-market-heading">
+              <p class="eyebrow">Buy new</p>
+              <h3>Direct retailers</h3>
+              <span>Official and specialist stores selling directly.</span>
+            </header>
+            <div id="directOfferTable" class="offer-card-list" aria-live="polite"></div>
+
+            <aside class="deal-panel" aria-label="Best trusted offer" hidden>
+              <span class="badge yellow">Best trusted offer</span>
+              <strong id="bestDealTotal">No verified offer</strong>
+              <p id="bestDealStore" hidden>Choose a figure to compare available stores.</p>
+              <a id="bestDealLink" aria-disabled="true">View offer</a>
+              <small id="bestDealNote" hidden>Includes product price, shipping, and taxes.</small>
+            </aside>
+          </div>
+
+          <div class="comparison-area">
+            <section class="offer-list-panel offer-market-column offer-market-column-used" aria-label="Second-hand store offers">
+              <header class="offer-market-heading">
+                <p class="eyebrow">Pre-owned</p>
+                <h3>Second-hand stores</h3>
+                <span>Verified used listings for this exact figure.</span>
+              </header>
+              <div id="offerTable" class="offer-card-list" aria-live="polite"></div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <dialog id="productImageLightbox" class="product-image-lightbox" aria-label="Full-size product images">
+        <div class="product-image-lightbox__surface">
+          <button id="productImageLightboxClose" class="product-image-lightbox__close" type="button" aria-label="Close full-size image">&times;</button>
+          <button id="productImageLightboxPrevious" class="product-image-lightbox__nav product-image-lightbox__nav--previous" type="button" aria-label="Previous image">&lsaquo;</button>
+          <figure>
+            <img id="productImageLightboxImage" src="./assets/figure-placeholder.svg" alt="Selected figure full-size view" />
+            <figcaption id="productImageLightboxCaption"></figcaption>
+          </figure>
+          <button id="productImageLightboxNext" class="product-image-lightbox__nav product-image-lightbox__nav--next" type="button" aria-label="Next image">&rsaquo;</button>
+        </div>
+      </dialog>
+
+      <section id="providers" class="app-band supplier-band" aria-labelledby="supplierTitle" hidden>
+        <div class="band-inner">
+          <div class="section-heading">
+            <div>
+              <p class="eyebrow">Trusted stores</p>
+              <h2 id="supplierTitle">Stores NekoPrice can compare</h2>
+            </div>
+            <p class="muted">Known figure retailers with clear product pages and store identity checks.</p>
+          </div>
+          <div class="supplier-grid" id="supplierGrid"></div>
+        </div>
+      </section>
+
+      <section id="community" class="app-band community-band" aria-labelledby="communityTitle" hidden>
+        <div class="community-reddit-app">
+          <h2 id="communityTitle" class="sr-only">NekoPrice Community</h2>
+          <header class="community-reddit-topbar">
+            <button id="communityHomeButton" class="community-brand-button" type="button" aria-label="Back to NekoPrice home">
+              <span class="community-brand-dot">N</span>
+              <strong>NekoPrice</strong>
+            </button>
+            <form class="community-search-bar" role="search" aria-label="Search community">
+              <span aria-hidden="true">?</span>
+              <input type="search" placeholder="Find figures, offers, restocks, stores..." autocomplete="off" />
+            </form>
+            <button class="community-ask-button" type="button" data-community-compose>Ask</button>
+            <button id="communityCreateAccountButton" class="community-account-button" type="button">Sign Up</button>
+            <button class="community-login-button" type="button" data-community-login>Log In</button>
+            <button class="community-more-button" type="button" aria-label="More community options">•••</button>
+          </header>
+
+          <div class="band-inner community-shell">
+            <aside class="community-panel community-left-rail" aria-label="Community navigation">
+              <nav class="community-main-nav" aria-label="Community sections">
+                <button type="button" data-community-filter="all" aria-pressed="true"><span>¦</span> Popular</button>
+                <button type="button" data-community-filter="offer"><span>?</span> Offers</button>
+                <button type="button" data-community-filter="new_figure"><span>?</span> New figures</button>
+                <button type="button" data-community-filter="restock"><span>?</span> Restocks</button>
+              </nav>
+
+              <div class="community-sidebar-group">
+                <button class="community-sidebar-title" type="button">Recent</button>
+                <nav class="community-tabs" aria-label="Community filters">
+                  <button type="button" data-community-filter="all" aria-pressed="true"><span>r/</span>NekoPrice</button>
+                  <button type="button" data-community-filter="offer"><span>r/</span>FigureDeals</button>
+                  <button type="button" data-community-filter="new_figure"><span>r/</span>PreOrders</button>
+                  <button type="button" data-community-filter="restock"><span>r/</span>Restocks</button>
+                </nav>
+              </div>
+
+              <div class="community-rule-card" role="note">
+                <strong>No off-topic posts.</strong>
+                <p>Only Japanese products, anime figures, manga, stores, prices, restocks, pre-orders, and offers.</p>
+              </div>
+            </aside>
+
+          <section class="community-timeline" aria-label="Community timeline">
+            <div class="community-feed-sort" aria-label="Feed sorting">
+              <button type="button">Best ?</button>
+              <button type="button">Everywhere ?</button>
+              <button type="button" aria-label="Compact layout">? ?</button>
+            </div>
+
+            <div class="community-warning" role="alert">
+              <strong>Community rule:</strong>
+              <span>Posts that run away from Japanese products, anime figures, manga, stores, prices, or offers will be blocked.</span>
+            </div>
+
+            <div id="communityGuestPrompt" class="community-guest-panel">
+              <strong>Create an account to post.</strong>
+              <p>Name, @handle, email, and reCAPTCHA are required before sharing offers or new figure discoveries.</p>
+            </div>
+
+            <form id="communityPostForm" class="community-composer" hidden>
+              <div class="community-composer-header">
+                <span id="communityViewerAvatar" class="community-avatar">N</span>
+                <div>
+                  <strong id="communityViewerName">Collector</strong>
+                  <small id="communityViewerEmail">Signed in</small>
+                </div>
+              </div>
+              <label class="sr-only" for="communityPostBody">Post text</label>
+              <textarea id="communityPostBody" maxlength="420" placeholder="Share a figure offer, pre-order, restock, or Japanese product discovery."></textarea>
+              <div class="community-compose-grid">
+                <label>
+                  Type
+                  <select id="communityPostType">
+                    <option value="offer">Offer</option>
+                    <option value="new_figure">New figure</option>
+                    <option value="restock">Restock</option>
+                    <option value="news">News</option>
+                    <option value="question">Question</option>
+                  </select>
+                </label>
+                <label>
+                  Store
+                  <input id="communityPostStore" type="text" maxlength="60" placeholder="Solaris Japan" />
+                </label>
+                <label>
+                  Price
+                  <input id="communityPostPrice" type="text" maxlength="40" placeholder="EUR 39.90" />
+                </label>
+              </div>
+              <label>
+                Product title
+                <input id="communityPostTitle" type="text" maxlength="140" placeholder="Hatsune Miku Nendoroid" />
+              </label>
+              <label>
+                Product link
+                <input id="communityPostUrl" type="url" placeholder="https://..." />
+              </label>
+              <label>
+                Image link
+                <input id="communityPostImage" type="url" placeholder="https://..." />
+              </label>
+              <div class="community-composer-actions">
+                <p id="communityPostStatus" class="muted" aria-live="polite"></p>
+                <button type="submit">Post</button>
+              </div>
+            </form>
+
+            <div id="communityFeed" class="community-feed" aria-live="polite">
+              <article class="community-post community-post-loading">
+                <span class="community-avatar">N</span>
+                <div>
+                  <strong>Loading community...</strong>
+                  <p>Fetching the latest collector posts.</p>
+                </div>
+              </article>
+            </div>
+          </section>
+
+            <aside class="community-panel community-right-rail" aria-label="Popular communities">
+              <div class="community-popular-card">
+                <p class="eyebrow">Popular communities</p>
+                <div class="community-popular-list">
+                  <button type="button"><span>?</span><strong>r/NekoPrice</strong><small>108,914 figures indexed</small></button>
+                  <button type="button"><span>?</span><strong>r/FigureDeals</strong><small>Live price drops</small></button>
+                  <button type="button"><span>?</span><strong>r/PreOrders</strong><small>New reservations</small></button>
+                  <button type="button"><span>?</span><strong>r/Restocks</strong><small>Back in stock alerts</small></button>
+                  <button type="button"><span>?</span><strong>r/MangaFinds</strong><small>Manga and goods</small></button>
+                </div>
+                <button class="community-see-more" type="button">See more</button>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+
+      <section id="game" class="app-band game-band" aria-labelledby="gameTitle" hidden>
+        <div class="band-inner">
+          <div class="game-shell">
+            <div class="game-stage game-lobby" id="gameLobby">
+              <p class="eyebrow">NekoPrice Game</p>
+              <h2 id="gameTitle">Guess the figure price</h2>
+              <p class="muted">
+                Guess the real catalogue price. Pick a currency, use each bonus once, and get as close as possible.
+              </p>
+              <ul class="game-rules">
+                <li>100 points for a perfect hit.</li>
+                <li>Closer guesses score higher.</li>
+                <li>Each bonus works once per run.</li>
+              </ul>
+              <div class="game-record-panel">
+                <span>All-time high score</span>
+                <strong id="gameHighScore">0</strong>
+                <small>Saved in this browser</small>
+              </div>
+              <label class="game-currency-label" for="gameCurrencySelect">
+                Game currency
+                <select id="gameCurrencySelect">
+                  <option value="EUR">EUR - Euro</option>
+                  <option value="BRL">BRL - Real</option>
+                  <option value="USD">USD - Dollar</option>
+                  <option value="JPY">JPY - Yen</option>
+                  <option value="GBP">GBP - Pound</option>
+                </select>
+              </label>
+              <button id="gameStartButton" class="game-primary-button" type="button">Start game</button>
+              <p id="gameLobbyStatus" class="game-status" aria-live="polite"></p>
+            </div>
+
+            <div class="game-stage game-play" id="gamePlay" hidden>
+              <div class="game-topline">
+                <div>
+                  <p class="eyebrow">Round <span id="gameRoundLabel">01</span></p>
+                  <h2 id="gameFigureName">Figure name</h2>
+                  <p id="gameFigureMaker" class="muted">Manufacturer</p>
+                </div>
+                <div class="game-top-actions">
+                  <div class="game-score-hud">
+                    <span>Score <strong id="gameCurrentScore">0</strong></span>
+                    <span>Record <strong id="gameHighScorePlay">0</strong></span>
+                  </div>
+                  <button id="gameNewRoundButton" class="secondary-button" type="button">Next figure</button>
+                  <button id="gameEndButton" class="secondary-button" type="button">End</button>
+                </div>
+              </div>
+
+              <div class="game-layout">
+                <figure class="game-figure-card">
+                  <img id="gameFigureImage" src="./assets/figure-placeholder.svg" alt="Figure to guess" />
+                </figure>
+
+                <div class="game-controls">
+                  <div class="game-guess-panel" id="gameGuessPanel">
+                    <label for="gameGuessInput">Your guess</label>
+                    <div class="game-money-input">
+                      <span id="gameCurrencySymbol">?</span>
+                      <input id="gameGuessInput" type="number" min="0" step="0.01" inputmode="decimal" placeholder="0.00" />
+                    </div>
+                    <button id="gameSubmitGuessButton" class="game-primary-button" type="button">Submit guess</button>
+                  </div>
+
+                  <div class="game-choice-panel" id="gameChoicePanel" hidden></div>
+
+                  <div class="game-powerups" aria-label="Game power-ups">
+                    <button type="button" data-game-powerup="multiple">Multiple choice</button>
+                    <button type="button" data-game-powerup="hotcold">Hot or cold</button>
+                    <button type="button" data-game-powerup="range">Safe range</button>
+                    <button type="button" data-game-powerup="clue">Tech clue</button>
+                  </div>
+
+                  <div id="gameHintPanel" class="game-hint-panel" aria-live="polite"></div>
+                  <div id="gameFeedback" class="game-feedback" aria-live="polite"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="contact" class="app-band contact-band" aria-labelledby="contactTitle" hidden>
+        <div class="band-inner simple-grid">
+          <div>
+            <p class="eyebrow">Contact</p>
+            <h2 id="contactTitle">Want a store or figure added?</h2>
+            <p class="muted">
+              NekoPrice is starting small: exact figure matching, transparent totals, and reliable store data first.
+            </p>
+          </div>
+          <a class="contact-link" href="mailto:hello@nekoprice.com">hello@nekoprice.com</a>
+        </div>
+      </section>
+
+      <section id="data" class="app-band data-band" aria-labelledby="dataTitle" hidden>
+        <div class="band-inner">
+          <div class="database-terminal">
+            <div class="terminal-window-bar" aria-hidden="true">
+              <span></span>
+              <span></span>
+              <span></span>
+              <code>nekoprice@catalog:~/database</code>
+            </div>
+
+            <div class="section-heading database-heading">
+              <div>
+                <p class="eyebrow">root@nekoprice:~$ ./database-status</p>
+                <h2 id="dataTitle">Data base</h2>
+                <p class="muted" id="databaseStatus">Loading catalogue data...</p>
+              </div>
+              <div class="database-actions">
+                <button id="databaseRefreshButton" class="terminal-button" type="button">./refresh</button>
+                <button id="databaseNamesButton" class="terminal-button" type="button" aria-expanded="false" aria-controls="databaseNamesPanel">ls figures --names</button>
+              </div>
+            </div>
+
+            <div class="database-stat-grid" aria-label="Catalogue database stats">
+              <article class="database-stat-card">
+                <span>Total figures</span>
+                <strong id="databaseFigureCount">0</strong>
+                <small>Figures currently available on the site.</small>
+              </article>
+              <article class="database-stat-card">
+                <span>Enriched figures</span>
+                <strong id="databaseProcessedCount">0</strong>
+                <small>Title and image enriched by the pipeline.</small>
+              </article>
+              <article class="database-stat-card">
+                <span>Waiting</span>
+                <strong id="databasePendingCount">0</strong>
+                <small>New JANs still waiting for enrichment.</small>
+              </article>
+              <article class="database-stat-card">
+                <span>Verified offers</span>
+                <strong id="databaseOfferCount">0</strong>
+                <small>Fresh exact matches allowed into comparisons.</small>
+              </article>
+              <article class="database-stat-card">
+                <span>Figures with verified price</span>
+                <strong id="databaseVerifiedFigureCount">0</strong>
+                <small>Figures currently covered by at least one trusted store.</small>
+              </article>
+              <article class="database-stat-card">
+                <span>Average stores</span>
+                <strong id="databaseAverageStores">0</strong>
+                <small>Verified store offers per covered figure.</small>
+              </article>
+              <article class="database-stat-card">
+                <span>Coverage · 0 stores</span>
+                <strong id="databaseCoverageZero">0</strong>
+                <small>First priority for source discovery.</small>
+              </article>
+              <article class="database-stat-card">
+                <span>Coverage · 1 store</span>
+                <strong id="databaseCoverageOne">0</strong>
+                <small>Second priority for store expansion.</small>
+              </article>
+              <article class="database-stat-card">
+                <span>Coverage · 2 stores</span>
+                <strong id="databaseCoverageTwo">0</strong>
+                <small>Figures one offer away from strong comparison.</small>
+              </article>
+              <article class="database-stat-card">
+                <span>Coverage · 3+ stores</span>
+                <strong id="databaseCoverageThreePlus">0</strong>
+                <small>Figures with healthy comparison coverage.</small>
+              </article>
+              <article class="database-stat-card">
+                <span>Expired</span>
+                <strong id="databaseExpiredOfferCount">0</strong>
+                <small>Offers waiting for a fresh store observation.</small>
+              </article>
+              <article class="database-stat-card">
+                <span>Recoverable backlog</span>
+                <strong id="databaseQuarantineCount">0</strong>
+                <small>Direct offers hidden until proof or a fresh observation succeeds.</small>
+              </article>
+              <article class="database-stat-card">
+                <span>Terminal quarantine</span>
+                <strong id="databaseTerminalQuarantineCount">0</strong>
+                <small>Identity, packaging, deposit or product conflicts kept only for audit.</small>
+              </article>
+              <article class="database-stat-card">
+                <span>Discovery candidates</span>
+                <strong id="databaseDiscoveryCandidateCount">0</strong>
+                <small>Search URLs waiting for a proven direct product page; never public offers.</small>
+              </article>
+              <article class="database-stat-card">
+                <span>Active recovery queue</span>
+                <strong id="databaseRecoveryQueueCount">0</strong>
+                <small>Persistent jobs with leases, retries and exact checkpoint resume.</small>
+              </article>
+              <article class="database-stat-card">
+                <span>Recovered · 24h</span>
+                <strong id="databaseRecovered24h">0</strong>
+                <small>Offers returned to comparisons after a conclusive store observation.</small>
+              </article>
+              <article class="database-stat-card">
+                <span>Coverage gains · 24h</span>
+                <strong id="databaseCoverageGains24h">0 / 0 / 0</strong>
+                <small>Figures moved from 0→1 / 1→2 / 2→3 distinct canonical stores.</small>
+              </article>
+              <article class="database-stat-card">
+                <span>Eligible 2→3</span>
+                <strong id="databaseEligibleTwoToThree">0</strong>
+                <small><span id="databaseEligibleTwoToThreePairs">0</span> exact figure/store candidates ready for a third store.</small>
+              </article>
+              <article class="database-stat-card">
+                <span>2→3 backlog forecast</span>
+                <strong id="databaseTwoToThreeEta">—</strong>
+                <small id="databaseTopRecoveryStore">No 2→3 promotions yet</small>
+              </article>
+              <article class="database-stat-card">
+                <span>Recovery success · 24h</span>
+                <strong id="databaseRecoverySuccessRate">0%</strong>
+                <small><span id="databaseRecoveryBlocked24h">0</span> blocked attempts are using adaptive backoff.</small>
+              </article>
+              <article class="database-stat-card">
+                <span>Official source variants</span>
+                <strong id="databaseSourceVariantCount">0</strong>
+                <small>Indexed API, feed, sitemap and Shopify variants available for exact matching.</small>
+              </article>
+              <article class="database-stat-card">
+                <span>FX snapshot age</span>
+                <strong id="databaseExchangeRateAge">—</strong>
+                <small>ECB reference-rate age; conversion stops after 96 hours.</small>
+              </article>
+              <article class="database-stat-card">
+                <span>Observation mismatch</span>
+                <strong id="databaseObservationMismatchCount">0</strong>
+                <small>Accepted observations that disagree with compatibility rows.</small>
+              </article>
+              <article class="database-stat-card">
+                <span>Unknown packaging</span>
+                <strong id="databaseUnknownPackageCount">0</strong>
+                <small>Listings hidden until unit, set or display size is proven.</small>
+              </article>
+              <article class="database-stat-card">
+                <span>Price/package outliers</span>
+                <strong id="databaseOutlierOfferCount">0</strong>
+                <small>Latest suspicious observations requiring another audit.</small>
+              </article>
+            </div>
+
+            <section id="databaseNamesPanel" class="database-names-panel" aria-label="Figure names in database" hidden>
+              <div class="terminal-command-line">
+                <span>$</span>
+                <code>cat figures.json | jq '.figures[].title'</code>
+              </div>
+              <ol id="databaseNameList" class="database-name-list"></ol>
+            </section>
+
+            <div class="pipeline">
+              <article>
+                <span>1</span>
+                <h3>Ingest</h3>
+                <p>crawler_amiami_ninja.py finds new JANs and writes jans_novos.txt.</p>
+              </article>
+              <article>
+                <span>2</span>
+                <h3>Insert</h3>
+                <p>bulk_insert.py inserts pending figures without duplicating existing JANs.</p>
+              </article>
+              <article>
+                <span>3</span>
+                <h3>Update</h3>
+                <p>update_catalog.py enriches names, images, metadata, and offers.</p>
+              </article>
+              <article>
+                <span>4</span>
+                <h3>Deploy</h3>
+                <p>auto_deploy.py --once ships the package to PythonAnywhere.</p>
+              </article>
+              <article>
+                <span>5</span>
+                <h3>Deep Scan</h3>
+                <p>weekly_deep_scan.bat runs the massive store sweep with store-level concurrency and safe rate limits.</p>
+              </article>
+              <article>
+                <span>6</span>
+                <h3>Exchange Rates</h3>
+                <p>update_rates.py audits JPY/USD anchors and exports the global currency pack to data/rates.json.</p>
+              </article>
+              <article>
+                <span>7</span>
+                <h3>Highlights</h3>
+                <p>update_highlights.py filters AmiAmi and Good Smile arrivals into the Top 15 data/highlights.json feed.</p>
+              </article>
+            </div>
+
+            <div class="admin-panel" aria-labelledby="adminTitle">
+              <div>
+                <p class="eyebrow">root@nekoprice:~$ tail pending.log</p>
+                <h3 id="adminTitle">Listings that need human review</h3>
+              </div>
+              <div id="validationQueue" class="queue-grid"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <dialog id="authDialog" class="modal auth-modal" data-auth-view="login" aria-label="Login to NekoPrice">
+      <div class="auth-dialog-shell">
+        <button class="auth-dialog-close" id="authDialogClose" type="button" aria-label="Close account dialog" title="Close">&times;</button>
+
+        <section class="auth-panel auth-panel--login" data-auth-panel="login">
+          <header class="auth-heading">
+            <span class="auth-heading-mark" aria-hidden="true"></span>
+            <div>
+              <p>Welcome back</p>
+              <h2 id="authDialogTitle">Login</h2>
+            </div>
+          </header>
+          <form id="authLoginForm" class="auth-form">
+            <label class="auth-field">
+              <span>E-mail</span>
+              <input id="authLoginEmail" type="email" autocomplete="email" maxlength="120" placeholder="you@example.com" required />
+            </label>
+            <label class="auth-field">
+              <span>Password</span>
+              <span class="auth-password-field">
+                <input id="authLoginPassword" type="password" autocomplete="current-password" minlength="8" maxlength="128" placeholder="Enter your password" required />
+                <button type="button" data-password-toggle="authLoginPassword" aria-label="Show password">Show</button>
+              </span>
+            </label>
+            <button id="authForgotButton" class="auth-forgot-button" type="button">Forgot your password?</button>
+            <button class="auth-primary-button" type="submit">Sign In</button>
+            <p id="authLoginStatus" class="auth-status" aria-live="polite"></p>
+            <p class="auth-switch-copy">Don't have an account? <button type="button" data-auth-switch="create">Sign up here</button></p>
+          </form>
+        </section>
+
+        <section class="auth-panel auth-panel--create" data-auth-panel="create" hidden>
+          <header class="auth-heading">
+            <span class="auth-heading-mark" aria-hidden="true"></span>
+            <div>
+              <p>Join NekoPrice</p>
+              <h2>Create Account</h2>
+            </div>
+          </header>
+          <form id="authCreateForm" class="auth-form">
+            <div class="auth-name-grid">
+              <label class="auth-field">
+                <span>First Name</span>
+                <input id="authCreateFirstName" type="text" autocomplete="given-name" maxlength="32" placeholder="First name" required />
+              </label>
+              <label class="auth-field">
+                <span>Last Name</span>
+                <input id="authCreateLastName" type="text" autocomplete="family-name" maxlength="32" placeholder="Last name" required />
+              </label>
+            </div>
+            <label class="auth-field">
+              <span>E-mail</span>
+              <input id="authCreateEmail" type="email" autocomplete="email" maxlength="120" placeholder="you@example.com" required />
+            </label>
+            <label class="auth-field">
+              <span>Create Password</span>
+              <span class="auth-password-field">
+                <input id="authCreatePassword" type="password" autocomplete="new-password" minlength="8" maxlength="128" placeholder="At least 8 characters" required />
+                <button type="button" data-password-toggle="authCreatePassword" aria-label="Show password">Show</button>
+              </span>
+            </label>
+            <p class="auth-password-note">Use at least 8 characters, including a letter and a number.</p>
+            <button class="auth-primary-button" type="submit">Create</button>
+            <p id="authCreateStatus" class="auth-status" aria-live="polite"></p>
+            <p class="auth-switch-copy">Already have an account? <button type="button" data-auth-switch="login">Sign in here</button></p>
+          </form>
+        </section>
+
+        <section class="auth-panel auth-panel--reset" data-auth-panel="reset" hidden>
+          <header class="auth-heading">
+            <span class="auth-heading-mark" aria-hidden="true"></span>
+            <div>
+              <p>Account recovery</p>
+              <h2>Choose a new password</h2>
+            </div>
+          </header>
+          <form id="authResetForm" class="auth-form">
+            <label class="auth-field">
+              <span>New Password</span>
+              <span class="auth-password-field">
+                <input id="authResetPassword" type="password" autocomplete="new-password" minlength="8" maxlength="128" placeholder="At least 8 characters" required />
+                <button type="button" data-password-toggle="authResetPassword" aria-label="Show password">Show</button>
+              </span>
+            </label>
+            <button class="auth-primary-button" type="submit">Reset password</button>
+            <p id="authResetStatus" class="auth-status" aria-live="polite"></p>
+            <p class="auth-switch-copy"><button type="button" data-auth-switch="login">Return to login</button></p>
+          </form>
+        </section>
+      </div>
+    </dialog>
+
+    <dialog id="loginDialog" class="modal profile-modal">
+      <form id="loginForm">
+        <div class="modal-header">
+          <h2>Account preferences</h2>
+          <button class="icon-button" id="loginClose" type="button" aria-label="Close" title="Close">&times;</button>
+        </div>
+        <div class="profile-grid">
+          <label class="filter-group">
+            Name
+            <input id="profileName" type="text" autocomplete="name" placeholder="Your name" />
+          </label>
+          <label class="filter-group">
+            Email
+            <input id="profileEmail" type="email" autocomplete="email" placeholder="you@example.com" />
+          </label>
+          <label class="filter-group">
+            Nationality
+            <select id="profileCountry"></select>
+          </label>
+          <label class="filter-group">
+            Currency
+            <select id="profileCurrency"></select>
+          </label>
+        </div>
+        <button type="submit">Save</button>
+        <p id="profileStatus" class="muted"></p>
+      </form>
+    </dialog>
+
+    <dialog id="communitySignupDialog" class="modal community-signup-modal">
+      <form id="communitySignupForm">
+        <div class="modal-header">
+          <h2>Join Community</h2>
+          <button class="icon-button" id="communitySignupClose" type="button" aria-label="Close" title="Close">&times;</button>
+        </div>
+        <label class="filter-group">
+          Name
+          <input id="communitySignupName" type="text" autocomplete="name" maxlength="48" placeholder="Collector name" required />
+        </label>
+        <label class="filter-group">
+          @handle
+          <input id="communitySignupHandle" type="text" autocomplete="username" maxlength="15" pattern="[A-Za-z0-9_]{4,15}" placeholder="nekofan_01" required />
+        </label>
+        <label class="filter-group">
+          Email
+          <input id="communitySignupEmail" type="email" autocomplete="email" maxlength="120" placeholder="you@example.com" required />
+        </label>
+        <label class="filter-group">
+          Bio
+          <input id="communitySignupBio" type="text" maxlength="160" placeholder="Figure collector, pre-order hunter" />
+        </label>
+        <div id="communityRecaptcha" class="community-recaptcha" aria-label="reCAPTCHA"></div>
+        <button type="submit">Create account</button>
+        <p id="communitySignupStatus" class="muted" aria-live="polite"></p>
+      </form>
+    </dialog>
+
+    <dialog id="wishlistDialog" class="modal wishlist-modal" data-view="single">
+      <form method="dialog">
+        <div class="modal-header">
+          <h2>Wishlist</h2>
+          <button class="icon-button" value="close" aria-label="Close" title="Close">&times;</button>
+        </div>
+        <div id="wishlistItems" class="modal-list"></div>
+      </form>
+    </dialog>
+
+    <dialog id="cartDialog" class="modal cart-modal">
+      <form method="dialog">
+        <div class="modal-header">
+          <h2>Cart</h2>
+          <button class="icon-button" value="close" aria-label="Close" title="Close">&times;</button>
+        </div>
+        <p class="muted">Save figures here while you compare stores. Checkout opens the verified store offer.</p>
+        <div id="cartItems" class="modal-list"></div>
+        <div class="modal-actions">
+          <button id="cartClearButton" class="secondary-button" type="button">Clear cart</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="alertDialog" class="modal">
+      <form method="dialog" id="alertForm">
+        <div class="modal-header">
+          <h2>Create price alert</h2>
+          <button class="icon-button" value="close" aria-label="Close" title="Close">&times;</button>
+        </div>
+        <label class="filter-group">
+          Email
+          <input id="alertEmail" type="email" placeholder="collector@example.com" />
+        </label>
+        <label class="filter-group">
+          Notify below (<span id="alertCurrencyLabel">EUR</span>)
+          <input id="alertPrice" type="number" min="1" step="0.01" value="40" />
+        </label>
+        <button type="submit">Save alert</button>
+        <p id="alertStatus" class="muted"></p>
+      </form>
+    </dialog>
+
+    <script src="assets/i18n-catalog.js?v=20260715-price-sort-options"></script>
+    <script src="assets/i18n.js?v=20260713-country-language"></script>
+    <script src="app.js?v=20260801-github-api"></script>
+  </body>
+</html>

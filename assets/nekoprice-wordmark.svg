@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1480 430" role="img" aria-labelledby="title desc">
+  <title id="title">NekoPrice</title>
+  <desc id="desc">NekoPrice wordmark with tagline Compare. Save. Collect more.</desc>
+  <defs>
+    <linearGradient id="pricePurple" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#6D4DFF"/>
+      <stop offset="1" stop-color="#4F2DF5"/>
+    </linearGradient>
+    <filter id="softInk" x="-6%" y="-8%" width="112%" height="116%">
+      <feDropShadow dx="0" dy="6" stdDeviation="6" flood-color="#160f32" flood-opacity=".14"/>
+    </filter>
+  </defs>
+  <rect width="1480" height="430" rx="44" fill="none"/>
+  <g fill="none" stroke-linecap="round" stroke-width="4">
+    <path d="M250 328H104" stroke="#BFA7FF"/>
+    <path d="M1226 328h146" stroke="#BFA7FF"/>
+    <path d="M644 384h112" stroke="#BFA7FF"/>
+    <path d="M824 384h112" stroke="#BFA7FF"/>
+  </g>
+  <g fill="#BFA7FF">
+    <path d="M71 120c19 0 27-12 31-43 4 31 12 43 43 43-31 4-39 12-43 43-4-31-12-39-43-43z"/>
+    <path d="M1390 188c14 0 20-9 23-32 3 23 9 32 32 32-23 3-29 9-32 32-3-23-9-29-32-32z"/>
+  </g>
+  <g fill="#86EBD9">
+    <path d="M126 214c15 0 22-10 25-35 3 25 10 35 35 35-25 3-32 10-35 35-3-25-10-32-35-35z"/>
+    <path d="M1330 254c16 0 23-10 26-38 3 28 10 38 38 38-28 3-35 10-38 38-3-28-10-35-38-38z"/>
+    <path d="M774 383c10 0 15-7 17-25 2 18 7 25 25 25-18 2-23 7-25 25-2-18-7-23-25-25z"/>
+  </g>
+  <g filter="url(#softInk)" font-family="Inter, Manrope, Arial Black, Arial, sans-serif" font-size="182" font-weight="950" letter-spacing="-7">
+    <text x="186" y="260" fill="#FFFFFF">Nek</text>
+    <g transform="translate(600 120) scale(.68)">
+      <path d="M44 40c10-30 31-42 61-18 22-8 47-8 69 0 30-24 51-12 61 18v112c0 70-45 112-96 112h-43C45 264 0 222 0 152V40z" fill="#FFFFFF"/>
+      <ellipse cx="117" cy="153" rx="58" ry="66" fill="#1A1A2E"/>
+    </g>
+    <text x="780" y="260" fill="url(#pricePurple)">Price</text>
+  </g>
+  <g font-family="Inter, Manrope, Segoe UI, Arial, sans-serif" font-size="44" font-weight="600" letter-spacing="1" fill="#6B6388">
+    <text x="435" y="342">Compare. Save. Collect more.</text>
+  </g>
+</svg>

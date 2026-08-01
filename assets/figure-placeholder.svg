@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640" role="img" aria-labelledby="title desc">
+  <title id="title">NekoPrice figure image pending</title>
+  <desc id="desc">Pastel placeholder used when a product image is unavailable.</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#f7fbff"/>
+      <stop offset="1" stop-color="#fff3f8"/>
+    </linearGradient>
+    <linearGradient id="figure" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0" stop-color="#ffd6e7"/>
+      <stop offset="1" stop-color="#e8dcff"/>
+    </linearGradient>
+  </defs>
+  <rect width="640" height="640" rx="28" fill="url(#bg)"/>
+  <circle cx="320" cy="176" r="92" fill="#cfe8ff"/>
+  <path d="M222 372c0-86 44-142 98-142s98 56 98 142v98H222z" fill="url(#figure)"/>
+  <path d="M196 494h248v34H196z" fill="#cff5e7"/>
+  <path d="M258 176c28 24 96 24 124 0" fill="none" stroke="#fffdfd" stroke-width="20" stroke-linecap="round"/>
+  <text x="320" y="580" text-anchor="middle" fill="#716b78" font-family="Arial, sans-serif" font-size="34" font-weight="700">Image pending</text>
+</svg>

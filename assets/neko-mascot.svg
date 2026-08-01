@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 420 520" role="img" aria-labelledby="title desc">
+  <title id="title">NekoPrice mascot</title>
+  <desc id="desc">A cute anime-style cat mascot wearing a dark hoodie with a purple N.</desc>
+  <defs>
+    <linearGradient id="fur" x1="40" x2="330" y1="80" y2="310" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#ffe1b0"/>
+      <stop offset=".55" stop-color="#fff4dd"/>
+      <stop offset="1" stop-color="#ffd196"/>
+    </linearGradient>
+    <linearGradient id="hoodie" x1="98" x2="320" y1="275" y2="460" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#242236"/>
+      <stop offset="1" stop-color="#090812"/>
+    </linearGradient>
+    <linearGradient id="purple" x1="156" x2="252" y1="310" y2="400" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#c4b5fd"/>
+      <stop offset="1" stop-color="#7c3aed"/>
+    </linearGradient>
+    <filter id="softShadow" x="-20%" y="-10%" width="140%" height="130%">
+      <feDropShadow dx="0" dy="18" stdDeviation="16" flood-color="#2e1065" flood-opacity=".2"/>
+    </filter>
+  </defs>
+  <ellipse cx="210" cy="488" rx="126" ry="18" fill="#ddd6fe"/>
+  <g filter="url(#softShadow)">
+    <path d="M112 138 86 34c-2-10 8-18 17-12l79 64Zm196 0 26-104c2-10-8-18-17-12l-79 64Z" fill="url(#fur)" stroke="#3b1d17" stroke-width="8" stroke-linejoin="round"/>
+    <path d="m110 65 42 44-52 2Zm200 0-42 44 52 2Z" fill="#ff9f97" opacity=".72"/>
+    <path d="M66 184c0-77 59-124 144-124s144 47 144 124c0 78-59 127-144 127S66 262 66 184Z" fill="url(#fur)" stroke="#3b1d17" stroke-width="8"/>
+    <path d="M66 179c16-19 41-33 75-41 38-10 58-29 66-50 20 42 62 53 128 74 5 10 8 21 9 32-42-16-83-25-128-25-57 0-106 10-150 32Z" fill="#ffe9c5" opacity=".82"/>
+    <path d="M52 207c-20-8-39-8-52 2M52 231c-21 0-37 6-48 19M368 207c20-8 39-8 52 2M368 231c21 0 37 6 48 19" fill="none" stroke="#59352a" stroke-width="6" stroke-linecap="round"/>
+    <path d="M125 189c0-21 16-38 36-38s36 17 36 38-16 38-36 38-36-17-36-38Zm99 0c0-21 16-38 36-38s36 17 36 38-16 38-36 38-36-17-36-38Z" fill="#211a35"/>
+    <circle cx="168" cy="174" r="10" fill="#fff"/>
+    <circle cx="267" cy="174" r="10" fill="#fff"/>
+    <circle cx="178" cy="203" r="7" fill="#8b5cf6"/>
+    <circle cx="277" cy="203" r="7" fill="#8b5cf6"/>
+    <path d="M205 226c5 4 10 4 15 0" fill="none" stroke="#8a3f35" stroke-width="6" stroke-linecap="round"/>
+    <path d="M183 244c14 15 40 15 54 0" fill="none" stroke="#8a3f35" stroke-width="7" stroke-linecap="round"/>
+    <path d="M104 443c1-95 25-162 106-162s105 67 106 162c-48 34-164 34-212 0Z" fill="url(#hoodie)" stroke="#080711" stroke-width="8"/>
+    <path d="M134 305c18-33 136-33 152 0-16 24-35 38-76 38s-60-14-76-38Z" fill="#191728"/>
+    <path d="M168 398v-76h24l44 43v-43h24v76h-23l-45-44v44Z" fill="url(#purple)"/>
+    <path d="M154 315v64M266 315v64" fill="none" stroke="#8b5cf6" stroke-width="8" stroke-linecap="round"/>
+    <circle cx="154" cy="387" r="9" fill="#a78bfa"/>
+    <circle cx="266" cy="387" r="9" fill="#a78bfa"/>
+    <path d="M109 357c-46 13-66 48-54 79 9 23 39 24 59 8 20-17 22-49 14-83Z" fill="url(#fur)" stroke="#3b1d17" stroke-width="8"/>
+    <path d="M302 330c27-61 82-69 104-36 20 31-9 70-47 60" fill="none" stroke="#3b1d17" stroke-width="18" stroke-linecap="round"/>
+    <path d="M302 330c25-48 63-55 79-34 13 18-5 42-30 39" fill="none" stroke="#ffd196" stroke-width="11" stroke-linecap="round"/>
+    <path d="M307 346c41-12 74 8 72 45-2 32-30 48-57 34-22-11-30-39-15-79Z" fill="url(#fur)" stroke="#3b1d17" stroke-width="8"/>
+    <circle cx="346" cy="385" r="11" fill="#ff9f97"/>
+    <circle cx="326" cy="374" r="7" fill="#ffb0a6"/>
+    <circle cx="365" cy="374" r="7" fill="#ffb0a6"/>
+    <circle cx="333" cy="408" r="7" fill="#ffb0a6"/>
+    <circle cx="363" cy="408" r="7" fill="#ffb0a6"/>
+  </g>
+</svg>

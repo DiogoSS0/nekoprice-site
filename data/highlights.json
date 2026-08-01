@@ -1,0 +1,113 @@
+{
+    "generatedAt": "2026-05-30T08:00:03+00:00",
+    "source": "data/figures.json",
+    "ratesSource": "data/rates.json",
+    "criteria": "8 NEW figures inside release window -3/+6 months, excluding placeholder future dates, plus 8 TRENDING discounted/high-coverage figures.",
+    "count": 8,
+    "highlights": [
+        {
+            "id": "4582191965420",
+            "jan": "4582191965420",
+            "title": "Hitagi Senjyogahara",
+            "image": "https://www.goodsmile.com/gsc-webrevo-sdk-storage-prd/product/image/product/20100511/2863/10073/large/b6c37a31c936646a97d0dd18d84fe2af.jpg",
+            "releaseDate": "",
+            "addedAt": "",
+            "priceEur": 0.38,
+            "tag": "TRENDING",
+            "store": "Solaris Japan",
+            "productUrl": "",
+            "discountPercentage": null
+        },
+        {
+            "id": "4545784041253",
+            "jan": "4545784041253",
+            "title": "Xecty Swimsuit ver.",
+            "image": "https://www.goodsmile.com/gsc-webrevo-sdk-storage-prd/product/image/product/20100528/2875/10254/large/761d6e4c1baa963d64e3148f74be0db9.jpg",
+            "releaseDate": "",
+            "addedAt": "",
+            "priceEur": 0.27,
+            "tag": "TRENDING",
+            "store": "Solaris Japan",
+            "productUrl": "",
+            "discountPercentage": null
+        },
+        {
+            "id": "4545784061367",
+            "jan": "4545784061367",
+            "title": "figma Makinami Mari Illustrious: New Plugsuit ver.",
+            "image": "https://www.goodsmile.com/gsc-webrevo-sdk-storage-prd/product/image/product/20100528/2874/10244/large/1b4e547f3e0e88b9fca1d8522422e162.jpg",
+            "releaseDate": "",
+            "addedAt": "",
+            "priceEur": 0.3,
+            "tag": "TRENDING",
+            "store": "Solaris Japan",
+            "productUrl": "https://solarisjapan.com/products/evangelion-shin-gekijouban-makinami-mari-illustrious-figma-079-max-factory",
+            "discountPercentage": null
+        },
+        {
+            "id": "4545784061459",
+            "jan": "4545784061459",
+            "title": "figma Shikinami Asuka Langley: Test Plugsuit ver.",
+            "image": "https://www.goodsmile.com/gsc-webrevo-sdk-storage-prd/product/image/product/20100802/2922/10878/large/b59a2c52b4bdd71aa8d8d31d6b65409f.jpg",
+            "releaseDate": "",
+            "addedAt": "",
+            "priceEur": 0.68,
+            "tag": "TRENDING",
+            "store": "Solaris Japan",
+            "productUrl": "https://solarisjapan.com/products/evangelion-shin-gekijouban-souryuu-asuka-langley-figma-084-test-plugsuit-ver-max-factory",
+            "discountPercentage": null
+        },
+        {
+            "id": "4545784061466",
+            "jan": "4545784061466",
+            "title": "figma Metis",
+            "image": "https://www.goodsmile.com/gsc-webrevo-sdk-storage-prd/product/image/product/20100818/2930/10992/large/80bdfce428e0924e7be5af65e4ef7a11.jpg",
+            "releaseDate": "",
+            "addedAt": "",
+            "priceEur": 0.12,
+            "tag": "TRENDING",
+            "store": "Solaris Japan",
+            "productUrl": "",
+            "discountPercentage": null
+        },
+        {
+            "id": "4545784041284",
+            "jan": "4545784041284",
+            "title": "Mio Akiyama",
+            "image": "https://www.goodsmile.com/gsc-webrevo-sdk-storage-prd/product/image/product/20100901/2957/11267/large/d1f7f6067c36eada8639533efbc6c014.jpg",
+            "releaseDate": "",
+            "addedAt": "",
+            "priceEur": 0.31,
+            "tag": "TRENDING",
+            "store": "Solaris Japan",
+            "productUrl": "",
+            "discountPercentage": null
+        },
+        {
+            "id": "4545784061565",
+            "jan": "4545784061565",
+            "title": "figma Rei Ayanami: Plugsuit ver.",
+            "image": "https://www.goodsmile.com/gsc-webrevo-sdk-storage-prd/product/image/product/20100929/2985/11566/large/13792bbf1f25de3a483c46f64fd05261.jpg",
+            "releaseDate": "",
+            "addedAt": "",
+            "priceEur": 0.13,
+            "tag": "TRENDING",
+            "store": "Solaris Japan",
+            "productUrl": "",
+            "discountPercentage": null
+        },
+        {
+            "id": "4582191967318",
+            "jan": "4582191967318",
+            "title": "Nendoroid Ui Hirasawa",
+            "image": "https://www.goodsmile.com/gsc-webrevo-sdk-storage-prd/product/image/product/20100929/2982/11541/large/ffa9073f0d55b913482341debca548f9.jpg",
+            "releaseDate": "",
+            "addedAt": "",
+            "priceEur": 0.18,
+            "tag": "TRENDING",
+            "store": "Solaris Japan",
+            "productUrl": "https://solarisjapan.com/products/k-on-hirasawa-ui-nendoroid-135-good-smile-company",
+            "discountPercentage": null
+        }
+    ]
+}
