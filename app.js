@@ -3646,6 +3646,10 @@ function normalizeFigure(rawFigure) {
     pending: isPendingFigure(raw),
     productUrl,
     tags: Array.isArray(raw?.tags) ? raw.tags : [],
+    maturityStatus: String(raw?.maturityStatus || raw?.maturity_status || "uncertain").trim().toLowerCase(),
+    maturityVisualScore: numberOrNull(raw?.maturityVisualScore ?? raw?.maturity_visual_score),
+    maturityTextScore: numberOrNull(raw?.maturityTextScore ?? raw?.maturity_text_score),
+    maturityCheckedAt: raw?.maturityCheckedAt || raw?.maturity_checked_at || "",
     matchNotes: Array.isArray(raw?.matchNotes) ? raw.matchNotes : [],
     history: Array.isArray(raw?.history) ? raw.history : [],
     offers
@@ -6611,45 +6615,7 @@ function categoryMatchesFigure(figure, isSearching) {
   }
 
   if (state.category === "castoff") {
-    const rawAdultText = [
-      safeFigure?.name,
-      safeFigure?.title,
-      safeFigure?.manufacturer,
-      safeFigure?.type,
-      safeFigure?.line,
-      safeFigure?.version,
-      Array.isArray(safeFigure?.tags) ? safeFigure.tags.join(" ") : ""
-    ].join(" ");
-    const hasExplicitAgeFlag = /(?:^|[\s([{/,+-])(?:r-?18|18\+|\+18|adult|nsfw)(?:$|[\s)\]}.,:+-])/i.test(rawAdultText);
-    const adultTerms = [
-      "cast off",
-      "castoff",
-      "lingerie",
-      "underwear",
-      "succubus",
-      "nude",
-      "naked",
-      "lewd",
-      "skytube",
-      "sky tube",
-      "binding",
-      "native creator",
-      "native creators",
-      "native creator s collection",
-      "native creators collection",
-      "native character selection",
-      "native characters selection",
-      "native online shop",
-      "daiki",
-      "daiki kogyo",
-      "insight",
-      "q six",
-      "rocket boy",
-      "pink charm",
-      "mouse unit",
-      "bfull"
-    ];
-    return hasExplicitAgeFlag || adultTerms.some((term) => normalizedTextHasTerm(text, term));
+    return safeFigure?.maturityStatus === "adult";
   }
 
   if (state.category === "figuarts") {
@@ -8556,33 +8522,7 @@ function figureMatchesQuickFilter(figure, filterKey) {
     case "in_stock_alt":
       return figureHasStockAvailability(figure);
     case "mature": {
-      const adultTerms = [
-        "cast off",
-        "castoff",
-        "r18",
-        "18+",
-        "adult",
-        "nsfw",
-        "lingerie",
-        "underwear",
-        "nude",
-        "naked",
-        "lewd",
-        "skytube",
-        "sky tube",
-        "binding",
-        "native creator",
-        "native creators",
-        "native character selection",
-        "native characters selection",
-        "native online shop",
-        "daiki",
-        "daiki kogyo",
-        "q six",
-        "rocket boy",
-        "pink charm"
-      ];
-      return adultTerms.some((term) => normalizedTextHasTerm(text, term));
+      return figure?.maturityStatus === "adult";
     }
     case "sales":
       return figureHasSaleOffer(figure);
