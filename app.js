@@ -661,6 +661,8 @@ const FIGURE_STRONG_PRODUCT_LINE_TOKENS = new Set([
   "ichibankuji", "bicutebunnies", "luminasta", "tenitol", "coreful",
   "bicute", "lookup", "revoltech", "mafex", "espresto"
 ]);
+const FIGURE_LOGO_PRODUCT_RE = /\bthe\s+gi(?:ant|gant)\s+name\b|\b(?:series|franchise|title)\s+logos?\b|\b(?:logos?\s+(?:display|figure|statue|ornament|plaque|plate|block|replica)|(?:display|statue|ornament|plaque|plate|block|replica)\s+logos?)\b/i;
+const FIGURE_SERIES_ART_IMAGE_RE = /(?:^|[_\-.])the[_\-.]?gi(?:ant|gant)[_\-.]?name(?:[_\-.]|$)|(?:^|[/_\-.])(?:series|franchise|category|collection)[_\-.]?(?:logo|banner)(?:[/_\-.]|$)/i;
 const FIGURE_NON_PRODUCT_IDENTITY_TERMS = [
   "nendoroid plus", "nendoroid more", "outfit set", "customizable face",
   "acrylic stand", "acrylic key", "keychain", "key chain", "rubber strap",
@@ -3037,7 +3039,7 @@ function isUsableFigureImage(url) {
   const value = String(url || "").trim();
   if (!value) return false;
   if (value === FIGURE_PLACEHOLDER_IMAGE) return false;
-  if (LOW_QUALITY_IMAGE_RE.test(value)) return false;
+  if (LOW_QUALITY_IMAGE_RE.test(value) || FIGURE_SERIES_ART_IMAGE_RE.test(value)) return false;
   return /\.(?:png|jpe?g|webp|avif)(?:[?#].*)?$/i.test(value) || value.includes("static.myfigurecollection.net");
 }
 
@@ -3050,7 +3052,7 @@ function premiumFigureImageFor(rawFigure) {
 
 function isUsableGalleryImage(url) {
   const value = String(url || "").trim();
-  if (!value || value === FIGURE_PLACEHOLDER_IMAGE || LOW_QUALITY_IMAGE_RE.test(value)) return false;
+  if (!value || value === FIGURE_PLACEHOLDER_IMAGE || LOW_QUALITY_IMAGE_RE.test(value) || FIGURE_SERIES_ART_IMAGE_RE.test(value)) return false;
   if (/^(?:data|blob|javascript|about):/i.test(value)) return false;
   return /^(?:https?:)?\/\//i.test(value) || isUsableFigureImage(value);
 }
@@ -6250,6 +6252,7 @@ function figureProductIdentityText(figure) {
 
 function figureHasNonFigureSignal(figure) {
   const text = figureProductIdentityText(figure);
+  if (FIGURE_LOGO_PRODUCT_RE.test(text)) return true;
   return NON_FIGURE_PRODUCT_TERMS.some((term) => normalizedTextHasTerm(text, term));
 }
 
