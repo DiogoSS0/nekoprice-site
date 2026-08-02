@@ -1130,7 +1130,7 @@ const CATEGORY_LABELS = {
 const FIGURE_QUICK_FILTER_LABELS = {
   in_stock_alt: "In-Stock",
   ecchi: "Ecchi",
-  adult_18: "+18",
+  adult_18: "+18 (Explicit content)",
   sales: "Sales",
   new: "New",
   poseable: "Poseable Figure",

@@ -21451,6 +21451,28 @@ html[data-theme] body.figure-catalog-open .results-band[data-mode="figures"] .fi
   color: inherit !important;
 }
 
+body.figure-catalog-open .results-band[data-mode="figures"] .figure-filter-check--explicit,
+html[data-theme] body.figure-catalog-open .results-band[data-mode="figures"] .figure-filter-check--explicit {
+  color: #ff4f64 !important;
+}
+
+body.figure-catalog-open .results-band[data-mode="figures"] .figure-filter-check--explicit input,
+html[data-theme] body.figure-catalog-open .results-band[data-mode="figures"] .figure-filter-check--explicit input {
+  border-color: rgba(255, 79, 100, 0.78) !important;
+}
+
+body.figure-catalog-open .results-band[data-mode="figures"] .figure-filter-check--explicit input::before,
+html[data-theme] body.figure-catalog-open .results-band[data-mode="figures"] .figure-filter-check--explicit input::before {
+  background: linear-gradient(135deg, #ff304f, #b8002f) !important;
+  box-shadow: 0 0 10px rgba(255, 48, 79, 0.72) !important;
+}
+
+body.figure-catalog-open .results-band[data-mode="figures"] .figure-filter-check--explicit input:checked,
+html[data-theme] body.figure-catalog-open .results-band[data-mode="figures"] .figure-filter-check--explicit input:checked {
+  border-color: #ff4f64 !important;
+  background: rgba(255, 48, 79, 0.16) !important;
+}
+
 body.figure-catalog-open .results-band[data-mode="figures"] .figure-filter-disclosure--price,
 html[data-theme] body.figure-catalog-open .results-band[data-mode="figures"] .figure-filter-disclosure--price {
   margin-top: 4px !important;
