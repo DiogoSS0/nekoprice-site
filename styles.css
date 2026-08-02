@@ -18787,6 +18787,7 @@ html[data-theme] .figure-image-guard-frame img.figure-image-guard {
   display: grid;
   gap: 4px;
   margin-top: auto;
+  transform: translateY(-6px);
 }
 
 .product-card__price-display {

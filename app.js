@@ -634,6 +634,8 @@ const FIGURE_TYPE_FILTER_GROUPS = [
 const FIGURE_TYPE_FILTER_OPTIONS = FIGURE_TYPE_FILTER_GROUPS.flatMap((group) => group.options);
 const FIGURE_PRODUCT_IDENTITY_REPLACEMENTS = [
   ["sung jinwoo mizushino shun", "sung jinwoo"],
+  ["mizushino shun", "sung jinwoo"],
+  ["shun mizushino", "sung jinwoo"],
   ["sung jin woo", "sung jinwoo"],
   ["trio try it", "triotryit"],
   ["trio try i t", "triotryit"],
@@ -1127,7 +1129,8 @@ const CATEGORY_LABELS = {
 
 const FIGURE_QUICK_FILTER_LABELS = {
   in_stock_alt: "In-Stock",
-  mature: "Mature",
+  ecchi: "Ecchi",
+  adult_18: "+18",
   sales: "Sales",
   new: "New",
   poseable: "Poseable Figure",
@@ -3396,7 +3399,23 @@ function compactFigureName(rawFigureOrTitle) {
 
 function compactFigureNameForCard(rawFigureOrTitle, maxLength = 34) {
   const name = compactFigureName(rawFigureOrTitle);
-  return name.length > maxLength ? `${name.slice(0, Math.max(0, maxLength - 3)).trim()}...` : name;
+  if (name.length <= maxLength) return name;
+
+  // Preserve the edition because it can be the only visible difference
+  // between two valid JANs returned by an explicit search.
+  const rawTitle = typeof rawFigureOrTitle === "object"
+    ? String(rawFigureOrTitle?.rawTitle || rawFigureOrTitle?.title || rawFigureOrTitle?.name || name)
+    : String(rawFigureOrTitle || name);
+  const variantMatch = rawTitle.match(/\b(normal|standard|regular|deluxe|dx)\s*(?:edition|ver(?:sion)?\.?)?/i);
+  if (variantMatch) {
+    const variant = variantMatch[1].toLowerCase() === "dx"
+      ? "DX"
+      : `${variantMatch[1][0].toUpperCase()}${variantMatch[1].slice(1).toLowerCase()}`;
+    const suffix = ` · ${variant}`;
+    const prefixLength = Math.max(8, maxLength - suffix.length - 1);
+    return `${name.slice(0, prefixLength).trim()}…${suffix}`;
+  }
+  return `${name.slice(0, Math.max(0, maxLength - 3)).trim()}...`;
 }
 
 function searchableFigureTitleText(figure) {
@@ -3470,6 +3489,48 @@ function normalizedFigureDedupeKeys(figure) {
 
 function normalizedFigureDedupeKey(figure) {
   return normalizedFigureDedupeKeys(figure)[0] || "";
+}
+
+const FIGURE_VISUAL_VARIANT_WORDS = new Set([
+  "bonus", "complete", "figure", "figures", "figurine", "figurines",
+  "statue", "statues", "painted", "pvc", "abs", "dx", "deluxe",
+  "normal", "standard", "regular", "ver", "version", "edition",
+  "limited", "exclusive", "rerelease", "reissue", "preorder", "pre",
+  "order"
+]);
+
+function figureVisualTitleFamily(value) {
+  const normalized = normalizeText(String(value || "")
+    .replace(/\b\d+\s*(?:\/|:|x)\s*\d+\b/g, " ")
+    .replace(/\b\d+(?:\.\d+)?\s*(?:cm|mm|in|inch|inches)\b/g, " "));
+  const tokens = normalized
+    .split(/\s+/)
+    .filter(Boolean)
+    .filter((token) => !FIGURE_VISUAL_VARIANT_WORDS.has(token));
+  const family = tokens.join(" ");
+  return tokens.length >= 4 && family.length >= 16 ? family : "";
+}
+
+function figureVisualSuppressionKeys(figure, { includeVariantFamily = true } = {}) {
+  if (!figure || isPendingFigure(figure)) return [];
+  const keys = [];
+  const rawTitle = figure.rawTitle || figure.title || figure.name || "";
+  const family = figureVisualTitleFamily(rawTitle);
+  const rawVariantText = String(rawTitle).toLowerCase();
+  const hasVariantSignal = /\b\d+\s*(?:\/|:|x)\s*\d+\b/.test(rawVariantText)
+    || /\b(?:normal|standard|regular|dx|deluxe|ver(?:sion)?|limited|exclusive|rerelease|reissue)\b/.test(rawVariantText);
+  const rawImage = String(figure.rawImage || rawFigureImage(figure) || figure.image || "").trim();
+  const imageKey = isUsableFigureImage(rawImage) ? canonicalFigureImageKey(rawImage) : "";
+  if (imageKey) keys.push(`visual-image:${imageKey}`);
+  if (includeVariantFamily && family && hasVariantSignal) keys.push(`visual-family:${family}`);
+
+  const contentHash = String(figure.imageContentSha256 || figure.image_content_sha256 || "").toLowerCase();
+  const pixelHash = String(figure.imagePixelSha256 || figure.image_pixel_sha256 || "").toLowerCase();
+  const dhash = String(figure.imageDhash64 || figure.image_dhash64 || "").toLowerCase();
+  if (/^[a-f0-9]{64}$/.test(contentHash)) keys.push(`visual-content:${contentHash}`);
+  if (/^[a-f0-9]{64}$/.test(pixelHash)) keys.push(`visual-pixels:${pixelHash}`);
+  if (family && /^[a-f0-9]{16}$/.test(dhash)) keys.push(`visual-dhash:${dhash}:${family}`);
+  return [...new Set(keys)];
 }
 
 function normalizedFigureScore(figure) {
@@ -3646,6 +3707,14 @@ function normalizeFigure(rawFigure) {
     pending: isPendingFigure(raw),
     productUrl,
     tags: Array.isArray(raw?.tags) ? raw.tags : [],
+    maturityStatus: String(raw?.maturityStatus || raw?.maturity_status || "uncertain").trim().toLowerCase(),
+    maturityLevel: String(raw?.maturityLevel || raw?.maturity_level || "").trim().toLowerCase(),
+    maturityVisualScore: numberOrNull(raw?.maturityVisualScore ?? raw?.maturity_visual_score),
+    maturityTextScore: numberOrNull(raw?.maturityTextScore ?? raw?.maturity_text_score),
+    maturityCheckedAt: raw?.maturityCheckedAt || raw?.maturity_checked_at || "",
+    imageContentSha256: raw?.imageContentSha256 || raw?.image_content_sha256 || "",
+    imagePixelSha256: raw?.imagePixelSha256 || raw?.image_pixel_sha256 || "",
+    imageDhash64: raw?.imageDhash64 || raw?.image_dhash64 || "",
     matchNotes: Array.isArray(raw?.matchNotes) ? raw.matchNotes : [],
     history: Array.isArray(raw?.history) ? raw.history : [],
     offers
@@ -6285,19 +6354,26 @@ function usesRemoteCataloguePages() {
   return usesPagedCatalogueLayout() && cataloguePagination.enabled;
 }
 
-function reloadFigureCatalogueForActiveFilters() {
+function reloadFigureCatalogueForActiveFilters({ rollbackState = null } = {}) {
   if (!usesPagedCatalogueLayout() || window.location.protocol === "file:") return false;
   const runId = ++apiSearchRunId;
   const refreshId = ++figureFilterRefreshSequence;
   figureFilterRefreshPending = { refreshId, runId };
   showFigureFilterRefreshPending();
+  let loaded = false;
   reloadCataloguePageForQuery(state.query, runId)
+    .then((result) => {
+      loaded = result === true;
+    })
     .catch((error) => {
       console.warn("Could not refresh the figure filters", error);
     })
     .finally(() => {
       if (figureFilterRefreshPending?.refreshId !== refreshId) return;
       figureFilterRefreshPending = null;
+      if (!loaded && rollbackState) {
+        restoreFigureFilterRequestState(rollbackState);
+      }
       renderProductCards();
     });
   return true;
@@ -6611,45 +6687,7 @@ function categoryMatchesFigure(figure, isSearching) {
   }
 
   if (state.category === "castoff") {
-    const rawAdultText = [
-      safeFigure?.name,
-      safeFigure?.title,
-      safeFigure?.manufacturer,
-      safeFigure?.type,
-      safeFigure?.line,
-      safeFigure?.version,
-      Array.isArray(safeFigure?.tags) ? safeFigure.tags.join(" ") : ""
-    ].join(" ");
-    const hasExplicitAgeFlag = /(?:^|[\s([{/,+-])(?:r-?18|18\+|\+18|adult|nsfw)(?:$|[\s)\]}.,:+-])/i.test(rawAdultText);
-    const adultTerms = [
-      "cast off",
-      "castoff",
-      "lingerie",
-      "underwear",
-      "succubus",
-      "nude",
-      "naked",
-      "lewd",
-      "skytube",
-      "sky tube",
-      "binding",
-      "native creator",
-      "native creators",
-      "native creator s collection",
-      "native creators collection",
-      "native character selection",
-      "native characters selection",
-      "native online shop",
-      "daiki",
-      "daiki kogyo",
-      "insight",
-      "q six",
-      "rocket boy",
-      "pink charm",
-      "mouse unit",
-      "bfull"
-    ];
-    return hasExplicitAgeFlag || adultTerms.some((term) => normalizedTextHasTerm(text, term));
+    return figurePublicMaturityLevel(safeFigure) === "adult_18";
   }
 
   if (state.category === "figuarts") {
@@ -8550,40 +8588,29 @@ function figureHasSaleOffer(figure) {
   });
 }
 
+function figurePublicMaturityLevel(figure) {
+  const level = String(figure?.maturityLevel || figure?.maturity_level || "").trim().toLowerCase();
+  if (level === "ecchi" || level === "adult_18") return level;
+  const status = String(figure?.maturityStatus || figure?.maturity_status || "").trim().toLowerCase();
+  if (status !== "adult") return status || "uncertain";
+
+  // Compatibility for a cached response created before maturityLevel existed.
+  // Fresh API responses always carry the server's evidence-based decision.
+  const visualScore = numberOrNull(figure?.maturityVisualScore ?? figure?.maturity_visual_score);
+  return visualScore !== null && visualScore >= 0.9 ? "adult_18" : "ecchi";
+}
+
 function figureMatchesQuickFilter(figure, filterKey) {
   const text = figureQuickFilterText(figure);
   switch (filterKey) {
     case "in_stock_alt":
       return figureHasStockAvailability(figure);
-    case "mature": {
-      const adultTerms = [
-        "cast off",
-        "castoff",
-        "r18",
-        "18+",
-        "adult",
-        "nsfw",
-        "lingerie",
-        "underwear",
-        "nude",
-        "naked",
-        "lewd",
-        "skytube",
-        "sky tube",
-        "binding",
-        "native creator",
-        "native creators",
-        "native character selection",
-        "native characters selection",
-        "native online shop",
-        "daiki",
-        "daiki kogyo",
-        "q six",
-        "rocket boy",
-        "pink charm"
-      ];
-      return adultTerms.some((term) => normalizedTextHasTerm(text, term));
-    }
+    case "ecchi":
+      return figurePublicMaturityLevel(figure) === "ecchi";
+    case "adult_18":
+      return figurePublicMaturityLevel(figure) === "adult_18";
+    case "mature":
+      return ["ecchi", "adult_18"].includes(figurePublicMaturityLevel(figure));
     case "sales":
       return figureHasSaleOffer(figure);
     case "new":
@@ -8704,7 +8731,7 @@ function figureMatchesTypeFilter(figure, filterKey = state.type) {
     case "bunny": return hasAny("bunny", "rabbit ver", "b style");
     case "swimsuit": return hasAny("swimsuit", "swimwear", "bikini", "beach ver", "bathing suit");
     case "original_character": return hasAny("original character", "original illustration", "creator s collection", "native creator");
-    case "castoff_adult": return figureMatchesQuickFilter(figure, "mature");
+    case "castoff_adult": return figureMatchesQuickFilter(figure, "adult_18");
     default:
       return normalizeText(figure?.type) === normalizeText(key) || normalizeText(figure?.scale) === normalizeText(key);
   }
@@ -8946,6 +8973,48 @@ function clearPrimaryCatalogueQuery() {
   }
 }
 
+function figureFilterRequestStateSnapshot() {
+  return {
+    query: state.query,
+    hasSearched,
+    category: state.category,
+    figureCatalogLabel: state.figureCatalogLabel,
+    seriesFilter: state.seriesFilter,
+    seriesCharacter: state.seriesCharacter,
+    gridQuery: state.gridQuery,
+    strictCategory: state.strictCategory,
+    quickFilters: [...activeFigureQuickFilters()]
+  };
+}
+
+function restoreFigureFilterRequestState(snapshot) {
+  if (!snapshot) return;
+  state.query = String(snapshot.query || "");
+  hasSearched = Boolean(snapshot.hasSearched);
+  state.category = snapshot.category || "trending";
+  state.figureCatalogLabel = snapshot.figureCatalogLabel || "Anime figures";
+  state.seriesFilter = snapshot.seriesFilter || null;
+  state.seriesCharacter = snapshot.seriesCharacter || "";
+  state.gridQuery = snapshot.gridQuery || "";
+  state.strictCategory = Boolean(snapshot.strictCategory);
+  state.quickFilters = Array.isArray(snapshot.quickFilters) ? [...snapshot.quickFilters] : [];
+  if (els.searchInput) els.searchInput.value = state.query;
+  if (els.headerSearchInput) els.headerSearchInput.value = state.query;
+  if (els.gridSearchInput) els.gridSearchInput.value = state.gridQuery;
+  syncFigureFilterControls();
+}
+
+function prepareGlobalMaturityFilter() {
+  state.category = "trending";
+  state.strictCategory = false;
+  state.seriesFilter = null;
+  state.seriesCharacter = "";
+  state.gridQuery = "";
+  if (els.gridSearchInput) els.gridSearchInput.value = "";
+  clearPrimaryCatalogueQuery();
+  if (els.seriesFilterSection) els.seriesFilterSection.hidden = true;
+}
+
 function clearSingleFigureFilter(key) {
   if (String(key || "").startsWith("quickFilter:")) {
     const filterKey = String(key).replace("quickFilter:", "");
@@ -9048,7 +9117,7 @@ function clearAllFigureFilters() {
   renderProductCards();
 }
 
-function dedupeVisibleFigureCards(items) {
+function dedupeVisibleFigureCards(items, { includeVariantFamily = true } = {}) {
   const dedupeState = createFigureDedupeState();
   items.forEach((figure) => {
     if (isPendingFigure(figure)) {
@@ -9060,24 +9129,22 @@ function dedupeVisibleFigureCards(items) {
     addFigureToDedupeState(dedupeState, figure);
   });
   const canonicalItems = dedupedFigureStateResult(dedupeState);
-  const visibleItems = [];
-  const indexByImage = new Map();
+  const acceptedIndexes = new Set();
+  const occupiedKeys = new Set();
   let repeatedImages = 0;
-
-  canonicalItems.forEach((figure) => {
-    const rawImage = String(figure?.rawImage || rawFigureImage(figure) || figure?.image || "").trim();
-    const imageKey = isUsableFigureImage(rawImage) ? canonicalFigureImageKey(rawImage) : "";
-    if (imageKey && indexByImage.has(imageKey)) {
-      const existingIndex = indexByImage.get(imageKey);
-      if (normalizedFigureScore(figure) > normalizedFigureScore(visibleItems[existingIndex])) {
-        visibleItems[existingIndex] = figure;
+  canonicalItems
+    .map((figure, index) => ({ figure, index }))
+    .sort((left, right) => normalizedFigureScore(right.figure) - normalizedFigureScore(left.figure) || left.index - right.index)
+    .forEach(({ figure, index }) => {
+      const keys = figureVisualSuppressionKeys(figure, { includeVariantFamily });
+      if (keys.length && keys.some((key) => occupiedKeys.has(key))) {
+        repeatedImages += 1;
+        return;
       }
-      repeatedImages += 1;
-      return;
-    }
-    if (imageKey) indexByImage.set(imageKey, visibleItems.length);
-    visibleItems.push(figure);
-  });
+      acceptedIndexes.add(index);
+      keys.forEach((key) => occupiedKeys.add(key));
+    });
+  const visibleItems = canonicalItems.filter((_, index) => acceptedIndexes.has(index));
 
   const totalRemoved = dedupeState.removed + repeatedImages;
   if (totalRemoved) {
@@ -9150,7 +9217,9 @@ function currentFigureMatches() {
   const sortedMatches = sortVisibleProducts(matches, isSearching);
   const priceSortIsActive = ["lowestTotal", "highestTotal"].includes(state.gridSort || state.sort);
   const orderedMatches = priceSortIsActive ? sortedMatches : applyCategoryRankingToMatches(sortedMatches);
-  cachedMatches = dedupeVisibleFigureCards(orderedMatches);
+  cachedMatches = dedupeVisibleFigureCards(orderedMatches, {
+    includeVariantFamily: !isSearching
+  });
   lastMatchesState = currentState;
   return cachedMatches;
 }
@@ -13480,17 +13549,38 @@ async function reloadCataloguePageForQuery(query, runId = apiSearchRunId, forceR
 
   let installed = false;
   try {
-    const response = await fetch(catalogueApiUrl({
-      page: 1,
-      limit: CATALOGUE_PAGE_LIMIT,
-      query: apiQuery,
-      kind: apiKind,
-      forceReload,
-      includeTotal: !seriesCharacterDiscovery && Boolean(apiQuery || trimmedQuery)
-    }), { cache: forceReload ? "no-store" : "default", signal: abortController.signal });
-    const data = await response.json().catch(() => ({}));
+    const requestPage = async (bypassCache = false) => {
+      const response = await fetch(catalogueApiUrl({
+        page: 1,
+        limit: CATALOGUE_PAGE_LIMIT,
+        query: apiQuery,
+        kind: apiKind,
+        forceReload: bypassCache,
+        includeTotal: !seriesCharacterDiscovery && Boolean(apiQuery || trimmedQuery)
+      }), { cache: bypassCache ? "no-store" : "default", signal: abortController.signal });
+      const data = await response.json().catch(() => ({}));
+      if (!response.ok) throw new Error(data.error || `Could not load catalogue page (${response.status})`);
+      return data;
+    };
+
+    let data = await requestPage(forceReload);
     if (runId !== apiSearchRunId || state.query.trim() !== trimmedQuery || state.catalogKind !== expectedKind || currentJanQuery()) return false;
-    if (!response.ok) throw new Error(data.error || `Could not load catalogue page (${response.status})`);
+    const returnedFigures = Array.isArray(data?.figures) ? data.figures : [];
+    if (activeFigureQuickFilters().length && returnedFigures.length === 0) {
+      if (els.resultMeta) els.resultMeta.textContent = "Confirming filtered catalogue...";
+      await new Promise((resolve) => window.setTimeout(resolve, 650));
+      if (runId !== apiSearchRunId || state.query.trim() !== trimmedQuery || state.catalogKind !== expectedKind) return false;
+      data = await requestPage(true);
+      if (runId !== apiSearchRunId || state.query.trim() !== trimmedQuery || state.catalogKind !== expectedKind || currentJanQuery()) return false;
+    }
+    if (
+      activeFigureQuickFilters().some((key) => ["ecchi", "adult_18", "mature"].includes(key))
+      && !trimmedQuery
+      && Array.isArray(data?.figures)
+      && data.figures.length === 0
+    ) {
+      throw new Error("The adult catalogue returned no rows after a direct retry.");
+    }
 
     await installCatalogueData(data);
     installed = true;
@@ -14707,11 +14797,34 @@ function bindEvents() {
   els.figureQuickFilters?.addEventListener("change", (event) => {
     const input = event.target.closest("[data-quick-filter]");
     if (!input) return;
+    const rollbackState = figureFilterRequestStateSnapshot();
+    if (input.dataset.quickFilter === "sales" && input.checked) {
+      // Sales has its own verified promotions feed and purpose-built cards.
+      // Routing there avoids an empty figure result when the legacy offer
+      // rows do not carry previous_price even though promotions.json does.
+      state.quickFilters = activeFigureQuickFilters().filter((key) => key !== "sales");
+      input.checked = false;
+      syncFigureQuickFilterControls();
+      showSalesSection(true);
+      return;
+    }
+    if (["ecchi", "adult_18"].includes(input.dataset.quickFilter) && input.checked) {
+      // Adult content levels are mutually exclusive global catalogue views.
+      // Carrying a previous series/search
+      // into this request produced deterministic zero-result pages such as
+      // "One Piece + Ecchi", then races made later attempts look random.
+      els.figureQuickFilters
+        .querySelectorAll('[data-quick-filter="ecchi"], [data-quick-filter="adult_18"]')
+        .forEach((item) => {
+          if (item !== input) item.checked = false;
+        });
+      prepareGlobalMaturityFilter();
+    }
     state.quickFilters = [...els.figureQuickFilters.querySelectorAll("[data-quick-filter]:checked")]
       .map((item) => item.dataset.quickFilter)
       .filter((key) => Object.prototype.hasOwnProperty.call(FIGURE_QUICK_FILTER_LABELS, key));
     state.catalogStandalone = true;
-    if (reloadFigureCatalogueForActiveFilters()) return;
+    if (reloadFigureCatalogueForActiveFilters({ rollbackState })) return;
     resetVisibleCards();
     renderProductCards();
   });
